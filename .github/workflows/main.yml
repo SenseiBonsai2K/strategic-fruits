@@ -9,8 +9,8 @@ on:
       - master
 
 jobs:
-  build:
-    name: Build for ${{ matrix.targetPlatform }}
+  test:
+    name: Test for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -71,6 +71,22 @@ jobs:
           name: Test results (all modes)
           path: ${{ steps.testRunner.outputs.artifactsPath }}
 
+  build:
+    needs: test
+    name: Build for ${{ matrix.targetPlatform }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        projectPath: [ '.' ]
+        unityVersion: [ '2022.3.33f1' ]
+        targetPlatform: [ 'StandaloneLinux64', 'WebGL', 'StandaloneWindows', 'StandaloneWindows64', 'StandaloneOSX' ]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -84,5 +100,5 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: Build
-          path: build
+          name: Build-${{ matrix.targetPlatform }}
+          path: build-${{ matrix.targetPlatform }}
