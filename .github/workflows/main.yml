@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         projectPath:
-          - strategic-fruits
+          - '.'
         unityVersion:
           - 2022.3.33f1
         targetPlatform:
@@ -108,12 +108,12 @@ jobs:
   # Job for building for Windows-based platforms
   buildForWindowsBasedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         projectPath:
-          - strategic-fruits
+          - '.'
         unityVersion:
           - 2022.3.33f1
         targetPlatform:
@@ -182,12 +182,12 @@ jobs:
   # Job for building for macOS-based platforms
   buildForMacOSBasedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         projectPath:
-          - strategic-fruits
+          - '.'
         unityVersion:
           - 2022.3.33f1
         targetPlatform:
