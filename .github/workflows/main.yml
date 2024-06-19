@@ -10,12 +10,12 @@ on:
 
 jobs:
   test:
-    name: Test on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    name: Testing Strategic Fruits 🧪
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, windows-latest ]
         projectPath:
           - '.'
         unityVersion:
@@ -58,22 +58,18 @@ jobs:
 
   build:
     needs: test
-    name: Build for ${{ matrix.targetPlatform }}
-    runs-on: ${{ matrix.os }}
+    name: Build Strategic Fruits for WebGL ✨
+    timeout-minutes: 360
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, windows-latest ]
         projectPath:
           - '.'
         unityVersion:
           - 2022.3.33f1
         targetPlatform:
-          - StandaloneLinux64 # Build a Linux 64-bit standalone.
-          - StandaloneWindows # Build a Windows 32-bit standalone.
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
-          - StandaloneOSX # Build a macOS standalone.
-          - WebGL # WebGL.
+          - WebGL
     steps:
       - uses: actions/checkout@v4
 
@@ -108,16 +104,18 @@ jobs:
         with:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
-          targetPlatform: ${{ matrix.targetPlatform }}
+          targetPlatform: WebGL
+          versioning: Semantic
       - uses: actions/upload-artifact@v3
         with:
-          name: Build/${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
+          name: Build/WebGL
+          path: build/WebGL
 
   deploy:
     needs: build
     name: Deploy to GitHub Pages 🚀
     runs-on: ubuntu-latest
+    timeout-minutes: 360
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -136,5 +134,3 @@ jobs:
         with:
           BRANCH: gh-pages
           FOLDER: build/WebGL
-          
-          
