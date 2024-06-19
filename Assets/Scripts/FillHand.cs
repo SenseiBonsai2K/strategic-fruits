@@ -17,6 +17,13 @@ public class FillHand : MonoBehaviour
             card.transform.localPosition = new Vector3(cardOffset * (i - 5.5f), i * yOffset, -(i * yOffset / 2));
             card.transform.Rotate(Vector3.right, 40);
             cardsInHand.Add(card);
+            
+            // Set the reference to the hand in the CardController
+            CardController cardController = card.GetComponent<CardController>();
+            if (cardController != null)
+            {
+                cardController.cardsInHand = cardsInHand;
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CardController : MonoBehaviour
@@ -8,6 +9,9 @@ public class CardController : MonoBehaviour
     private Vector3 _originalPosition; // The target position of the GameObject
     private Vector3 _originalScale; // The original scale of the GameObject
     private Vector3 _screenPoint;
+    public GameObject firstCardSlot;
+    public GameObject secondCardSlot;
+    public List<GameObject> cardsInHand; // The list of cards in hand
 
     private void Start()
     {
@@ -15,6 +19,8 @@ public class CardController : MonoBehaviour
         _originalScale = transform.localScale;
         _hoverAmount = 0.35f; // Set the hover amount
         _originalPosition = transform.position; // Store the original position
+        firstCardSlot = GameObject.Find("FirstCardSlot");
+        secondCardSlot = GameObject.Find("SecondCardSlot");
     }
 
     private void OnMouseDown()
@@ -58,8 +64,27 @@ public class CardController : MonoBehaviour
     private void OnMouseUp()
     {
         _isDragging = false;
-        // If drop is not allowed, return the card to its original position
-        transform.position = _originalPosition;
-        OnMouseExit(); // Add this line
+
+        // If the card is released in the upper half of the screen, move it to the table slot
+        if (Input.mousePosition.y > Screen.height / 2)
+        {
+            //unparent the card
+            transform.parent = null;
+
+            // Move and rotate the card
+            transform.position = firstCardSlot.transform.position + new Vector3(0,firstCardSlot.transform.localScale.z,0);
+            transform.rotation = firstCardSlot.transform.rotation;
+
+            // Update the original position to the new position
+            _originalPosition = transform.position;
+
+            // Remove the card from the hand
+            cardsInHand.Remove(gameObject); // Add this line
+        }
+        else
+        {
+            // If drop is not allowed, return the card to its original position
+            transform.position = _originalPosition;
+        }
     }
 }
