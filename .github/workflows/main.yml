@@ -102,3 +102,23 @@ jobs:
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build-${{ matrix.targetPlatform }}
+  
+  deployPages:
+    needs: build
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: Build-WedGL
+          path: build-WebGL
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: build-WebGL
