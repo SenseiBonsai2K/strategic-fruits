@@ -1,7 +1,5 @@
-﻿# Name of the GitHub Actions workflow
-name: Actions 😎
+﻿name: Actions 😎
 
-# This workflow gets triggered on push or pull request events to the master branch
 on:
   push:
     branches:
@@ -10,31 +8,22 @@ on:
     branches:
       - master
 
-# Jobs that this workflow will run
 jobs:
-  
-  # Job for building and testing for Linux-based platforms
-  buildAndTestForLinuxBasedPlatforms:
+  build:
     name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        projectPath:
-          - '.'
-        unityVersion:
-          - 2022.3.33f1
-        targetPlatform:
-          - StandaloneLinux64 # Build a Linux 64-bit standalone.
-          - WebGL # WebGL.
+        projectPath: [ '.' ]
+        unityVersion: [ '2022.3.33f1' ]
+        targetPlatform: [ 'StandaloneLinux64', 'WebGL', 'StandaloneWindows', 'StandaloneWindows64', 'StandaloneOSX' ]
+
     steps:
-      
-      # Checkout the repository
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
-      # Git LFS related steps
+
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d ' ' -f1 | sort > .lfs-assets-id
 
@@ -51,19 +40,15 @@ jobs:
           git add .
           git reset --hard
 
-      # Cache the Unity project's Library directory
       - uses: actions/cache@v3
         with:
           path: ${{ matrix.projectPath }}/Library
-          key:
-            Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-${{
-            hashFiles(matrix.projectPath) }}
+          key: Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-${{ hashFiles(matrix.projectPath) }}
           restore-keys: |
             Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-
             Library-${{ matrix.projectPath }}-
             Library-
-      
-      # Run Unity tests
+
       - uses: game-ci/unity-test-runner@v4.3.0
         id: testRunner
         env:
@@ -74,15 +59,13 @@ jobs:
           projectPath: ${{ matrix.projectPath }}
           unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.TOKEN_GITHUB }}
-      
-      # Upload test results as an artifact
+
       - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: Test results (all modes)
           path: ${{ steps.testRunner.outputs.artifactsPath }}
-      
-      # Build the Unity project
+
       - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -93,161 +76,12 @@ jobs:
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Semantic
-      
-      # Upload the build as an artifact
+
       - uses: actions/upload-artifact@v3
         with:
           name: Build
           path: build
-      
-      # Return License
-      - name: Return license
-        uses: game-ci/unity-return-license@v2
-        if: always()
 
-  # Job for building for Windows-based platforms
-  buildForWindowsBasedPlatforms:
-    name: Build for ${{ matrix.targetPlatform }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        projectPath:
-          - '.'
-        unityVersion:
-          - 2022.3.33f1
-        targetPlatform:
-          - StandaloneWindows # Build a Windows 32-bit standalone.
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
-
-    steps:
-      
-      # Checkout the repository
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      
-      # Git LFS related steps
-      - name: Create LFS file list
-        run: git lfs ls-files -l | cut -d ' ' -f1 | sort > .lfs-assets-id
-
-      - name: Restore LFS cache
-        uses: actions/cache@v3
-        id: lfs-cache
-        with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-
-      - name: Git LFS Pull
-        run: |
-          git lfs pull
-          git add .
-          git reset --hard
-
-      # Cache the Unity project's Library directory
-      - uses: actions/cache@v3
-        with:
-          path: ${{ matrix.projectPath }}/Library
-          key:
-            Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-${{
-            hashFiles(matrix.projectPath) }}
-          restore-keys: |
-            Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-
-            Library-${{ matrix.projectPath }}-
-            Library-
-      
-      # Build the Unity project
-      - uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          projectPath: ${{ matrix.projectPath }}
-          unityVersion: ${{ matrix.unityVersion }}
-          targetPlatform: ${{ matrix.targetPlatform }}
-          versioning: Semantic
-      
-      # Upload the build as an artifact
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Build
-          path: build
-      
-      # Return License
-      - name: Return license
-        uses: game-ci/unity-return-license@v2
-        if: always()
-
-  # Job for building for macOS-based platforms
-  buildForMacOSBasedPlatforms:
-    name: Build for ${{ matrix.targetPlatform }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        projectPath:
-          - '.'
-        unityVersion:
-          - 2022.3.33f1
-        targetPlatform:
-          - StandaloneOSX # Build a macOS standalone.
-
-    steps:
-      
-      # Checkout the repository
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      
-      # Git LFS related steps
-      - name: Create LFS file list
-        run: git lfs ls-files -l | cut -d ' ' -f1 | sort > .lfs-assets-id
-
-      - name: Restore LFS cache
-        uses: actions/cache@v3
-        id: lfs-cache
-        with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-
-      - name: Git LFS Pull
-        run: |
-          git lfs pull
-          git add .
-          git reset --hard
-
-      # Cache the Unity project's Library directory
-      - uses: actions/cache@v3
-        with:
-          path: ${{ matrix.projectPath }}/Library
-          key:
-            Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-${{
-            hashFiles(matrix.projectPath) }}
-          restore-keys: |
-            Library-${{ matrix.projectPath }}-${{ matrix.targetPlatform }}-
-            Library-${{ matrix.projectPath }}-
-            Library-
-      
-      # Build the Unity project
-      - uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          projectPath: ${{ matrix.projectPath }}
-          unityVersion: ${{ matrix.unityVersion }}
-          targetPlatform: ${{ matrix.targetPlatform }}
-          versioning: Semantic
-      
-      # Upload the build as an artifact
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Build
-          path: build
-      
-      # Return License
       - name: Return license
         uses: game-ci/unity-return-license@v2
         if: always()
