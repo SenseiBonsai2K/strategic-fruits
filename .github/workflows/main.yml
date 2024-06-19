@@ -69,17 +69,30 @@ jobs:
           targetPlatform: ${{ matrix.targetPlatform }}
       - uses: actions/upload-artifact@v3
         with:
-          name: Build
-          path: build
+          name: Build/${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
 
   deploy:
     needs: build
+    name: Deploy to GitHub Pages 🚀
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+
+      - uses: actions/download-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          name: Build/WebGL
+          path: build/WebGL
+
+      - name: Display structure of the repository
+        run: ls -R
+        working-directory: build/WebGL
+
+      - name: Deploy to GitHub Pages 🚀
+        uses: JamesIves/github-pages-deploy-action@4.6.1
+        with:
+          BRANCH: gh-pages
+          FOLDER: build/WebGL
+          
+          
