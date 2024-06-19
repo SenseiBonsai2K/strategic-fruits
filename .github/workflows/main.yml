@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        projectPath: [ '.' ]
+        projectPath: [ 'strategic-fruits' ]
         unityVersion: [ '2022.3.33f1' ]
         targetPlatform: [ 'StandaloneLinux64', 'WebGL', 'StandaloneWindows', 'StandaloneWindows64', 'StandaloneOSX' ]
 
@@ -78,7 +78,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        projectPath: [ '.' ]
+        projectPath: [ 'strategic-fruits' ]
         unityVersion: [ '2022.3.33f1' ]
         targetPlatform: [ 'StandaloneLinux64', 'WebGL', 'StandaloneWindows', 'StandaloneWindows64', 'StandaloneOSX' ]
 
