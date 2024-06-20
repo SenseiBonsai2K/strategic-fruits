@@ -109,7 +109,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: Build
-          path: build/WebGL
+          path: build
 
   deploy:
     needs: build
@@ -123,11 +123,11 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: Build
-          path: build/WebGL
+          path: build
 
       - name: Display structure of the repository
         run: ls -R
-        working-directory: build/WebGL
+        working-directory: build
 
       - name: Deploy to GitHub Pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4
