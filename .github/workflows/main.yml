@@ -122,7 +122,7 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: Build/WebGL
+          name: WebGL
           path: build/WebGL
 
       - name: Display structure of the repository
