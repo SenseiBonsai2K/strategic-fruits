@@ -58,7 +58,7 @@ jobs:
 
   build:
 #    needs: test
-    name: Build Strategic Fruits for WebGL ✨
+    name: Build for WebGL ✨
     timeout-minutes: 360
     runs-on: ubuntu-latest
     strategy:
@@ -130,7 +130,7 @@ jobs:
         working-directory: build/WebGL
 
       - name: Deploy to GitHub Pages 🚀
-        uses: JamesIves/github-pages-deploy-action@4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           BRANCH: gh-pages/nightly
-          FOLDER: build/WebGL
+          FOLDER: build
