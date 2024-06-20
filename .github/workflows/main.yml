@@ -108,7 +108,7 @@ jobs:
           versioning: Semantic
       - uses: actions/upload-artifact@v3
         with:
-          name: WebGL
+          name: Build
           path: build/WebGL
 
   deploy:
