@@ -130,7 +130,7 @@ jobs:
         working-directory: build/WebGL
 
       - name: Deploy to GitHub Pages 🚀
-        uses: JamesIves/github-pages-deploy-action@4.6.1
+        uses: JamesIves/github-pages-deploy-action@4
         with:
           BRANCH: gh-pages/nightly
           FOLDER: build/WebGL
