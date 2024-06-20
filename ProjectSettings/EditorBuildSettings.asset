@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/StrategicFruits.unity
+    guid: fae477fe648fd1047873efc33e9fe55c
   m_configObjects: {}
