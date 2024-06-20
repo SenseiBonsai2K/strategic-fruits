@@ -9,7 +9,13 @@ on:
       - master
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
 #  test:
@@ -76,6 +82,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
 
@@ -109,31 +125,14 @@ jobs:
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: WebGL
           versioning: Semantic
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Build
-          path: build
 
   deploy:
-    needs: build
-    name: Deploy to GitHub Pages 🚀
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    timeout-minutes: 360
+    needs: build
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: Build
-          path: build
-
-      - name: Display structure of the repository
-        run: ls -R
-        working-directory: build
-
-      - name: Deploy to GitHub Pages 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          BRANCH: gh-pages/nightly
-          FOLDER: build
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
