@@ -23,8 +23,21 @@ public class CardController : MonoBehaviour
         secondCardSlot = GameObject.Find("SecondCardSlot");
     }
 
+    private bool IsChildOfHand()
+    {
+        // Check if the parent is "Hand"
+        return transform.parent != null && transform.parent.name == "Hand";
+    }
+
+    private bool IsChildOfFirstCardSlot()
+    {
+        // Check if the parent is "FirstCardSlot"
+        return transform.parent != null && transform.parent.name == "FirstCardSlot";
+    }
+
     private void OnMouseDown()
     {
+        if (!IsChildOfHand()) return;
         _isDragging = true;
         transform.localScale = _originalScale;
         _screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
@@ -35,6 +48,7 @@ public class CardController : MonoBehaviour
 
     private void OnMouseDrag()
     {
+        if (!IsChildOfHand()) return;
         _isDragging = true;
         var curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenPoint.z);
         var curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + _offset;
@@ -43,17 +57,15 @@ public class CardController : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!_isDragging)
-        {
-            // Restore the original scale when the mouse is not over it
-            transform.position = _originalPosition;
-            transform.localScale = _originalScale;
-        }
+        if (_isDragging || !IsChildOfHand()) return;
+        // Restore the original scale when the mouse is not over it
+        transform.position = _originalPosition;
+        transform.localScale = _originalScale;
     }
 
     private void OnMouseOver()
     {
-        if (!_isDragging)
+        if (_isDragging || !IsChildOfHand()) return;
         {
             // Scale the GameObject up when the mouse is over it
             transform.position = _originalPosition + new Vector3(0, _hoverAmount / 2, 0);
@@ -68,18 +80,35 @@ public class CardController : MonoBehaviour
         // If the card is released in the upper half of the screen, move it to the table slot
         if (Input.mousePosition.y > Screen.height / 2)
         {
-            //unparent the card
-            transform.parent = null;
+            // Check if firstCardSlot already has a child
+            if (firstCardSlot.transform.childCount > 0)
+            {
+                // If firstCardSlot already has a child, return the card to its original position
+                transform.position = _originalPosition;
+                return;
+            }
+
+            // Store the global scale of the card
+            Vector3 globalScale = transform.lossyScale;
+
+            // Change the parent
+            transform.SetParent(firstCardSlot.transform, false);
+
+            // Calculate a new local scale for the card that maintains its global scale
+            transform.localScale = new Vector3(globalScale.x / transform.parent.lossyScale.x,
+                globalScale.y / transform.parent.lossyScale.y,
+                globalScale.z / transform.parent.lossyScale.z);
 
             // Move and rotate the card
-            transform.position = firstCardSlot.transform.position + new Vector3(0,firstCardSlot.transform.localScale.z,0);
+            transform.position = firstCardSlot.transform.position +
+                                 new Vector3(0, firstCardSlot.transform.localScale.z, 0);
             transform.rotation = firstCardSlot.transform.rotation;
 
             // Update the original position to the new position
             _originalPosition = transform.position;
 
             // Remove the card from the hand
-            cardsInHand.Remove(gameObject); // Add this line
+            cardsInHand.Remove(gameObject);
         }
         else
         {
