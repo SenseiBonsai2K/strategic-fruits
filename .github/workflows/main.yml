@@ -8,9 +8,6 @@ on:
     branches:
       - master
 
-permissions:
-  contents: write
-
 jobs:
 #  test:
 #    name: Testing Strategic Fruits 🧪
