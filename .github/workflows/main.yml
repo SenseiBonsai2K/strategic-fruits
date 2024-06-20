@@ -84,7 +84,14 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
 
@@ -118,9 +125,6 @@ jobs:
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: WebGL
           versioning: Semantic
-          
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
 
   deploy:
     environment:
