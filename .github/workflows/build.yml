@@ -45,7 +45,7 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
   build:
-#    needs: test
+    needs: test
     name: Build for WebGL ✨
     timeout-minutes: 360
     runs-on: ubuntu-latest
