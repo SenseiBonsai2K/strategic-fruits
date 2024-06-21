@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class GameManager : MonoBehaviour
     public List<GameObject> secondSlots;
     public bool isCoroutinesRunning;
 
+    [FormerlySerializedAs("firstSlotsSolved")]
+    public bool firstCardsSolved;
+
     private void Start()
     {
         Debug.Log("Phase: " + currentPhase + ", Round: " + currentRound);
@@ -18,23 +22,28 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (!CheckFirstSlots() || isCoroutinesRunning) return;
-        StartCoroutine(RotateAndDestroyCards());
+        if (isCoroutinesRunning) return;
+        if (FirstSlotsHaveCard() && !firstCardsSolved)
+            StartCoroutine(RotateAndDestroyFirstCard());
+        else if (FirstSlotsHaveCard() && SecondSlotsHaveCard())
+            StartCoroutine(RotateAndDestroySecondCard());
     }
 
-    public void AdvanceRound()
+    private void AdvanceRound()
     {
         currentRound++;
+        firstCardsSolved = false;
 
-        if (currentPhase == 1 && currentRound > 2)
+        switch (currentPhase)
         {
-            currentPhase++;
-            currentRound = 1;
-        }
-        else if (currentPhase is 2 or 3 && currentRound > 6)
-        {
-            currentPhase++;
-            currentRound = 1;
+            case 1 when currentRound > 2:
+                currentPhase++;
+                currentRound = 1;
+                break;
+            case 2 or 3 when currentRound > 6:
+                currentPhase++;
+                currentRound = 1;
+                break;
         }
 
         if (currentPhase > 3)
@@ -46,19 +55,20 @@ public class GameManager : MonoBehaviour
         Debug.Log("Phase: " + currentPhase + ", Round: " + currentRound);
     }
 
-    private bool CheckFirstSlots()
+    private bool FirstSlotsHaveCard()
     {
         return firstSlots.All(slot => slot.transform.childCount > 0);
     }
-    
-    private bool CheckSecondSlots()
+
+    private bool SecondSlotsHaveCard()
     {
         return secondSlots.All(slot => slot.transform.childCount > 0);
     }
 
-    private IEnumerator RotateAndDestroyCards()
+    private IEnumerator RotateAndDestroyFirstCard()
     {
         isCoroutinesRunning = true;
+        firstCardsSolved = true;
 
         yield return new WaitForSeconds(2);
 
@@ -78,14 +88,49 @@ public class GameManager : MonoBehaviour
             child.position -= new Vector3(0, 0.1f, 0);
 
         yield return new WaitForSeconds(3);
-
-        // Destroy cards only in the first phase
+        
         if (currentPhase == 1)
+        {
             foreach (var slot in firstSlots)
                 Destroy(slot.transform.GetChild(0).gameObject);
-
-        AdvanceRound();
+            AdvanceRound();
+        }
 
         isCoroutinesRunning = false;
     }
-}
+
+
+    private IEnumerator RotateAndDestroySecondCard()
+    {
+            isCoroutinesRunning = true;
+
+            yield return new WaitForSeconds(2);
+
+            // Move cards up by 2f
+            foreach (var child in secondSlots.Select(slot => slot.transform.GetChild(0)))
+                child.position += new Vector3(0, 0.1f, 0);
+
+            yield return new WaitForSeconds(1);
+
+            // Rotate cards around the long side
+            foreach (var child in secondSlots.Select(slot => slot.transform.GetChild(0))) child.Rotate(0, 180, 0);
+
+            yield return new WaitForSeconds(1);
+
+            // Move cards down by 2f
+            foreach (var child in secondSlots.Select(slot => slot.transform.GetChild(0)))
+                child.position -= new Vector3(0, 0.1f, 0);
+
+            yield return new WaitForSeconds(3);
+
+            //Distruggi le carte figlie di first slot e secondslot 
+            foreach (var slot in firstSlots)
+                Destroy(slot.transform.GetChild(0).gameObject);
+            foreach (var slot in secondSlots)
+                Destroy(slot.transform.GetChild(0).gameObject);
+
+            AdvanceRound();
+
+            isCoroutinesRunning = false;
+        }
+    }

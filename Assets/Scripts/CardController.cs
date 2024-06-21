@@ -10,6 +10,7 @@ public class CardController : MonoBehaviour
     private Vector3 _originalScale; // The original scale of the GameObject
     private Vector3 _screenPoint;
     private GameObject _secondCardSlot;
+    public GameManager gameManager;
 
     private void Start()
     {
@@ -19,6 +20,7 @@ public class CardController : MonoBehaviour
         _originalPosition = transform.position; // Store the original position
         _firstCardSlot = GameObject.Find(gameObject.tag + "FirstSlot");
         _secondCardSlot = GameObject.Find(gameObject.tag + "SecondSlot");
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     private void OnMouseDown()
@@ -71,7 +73,10 @@ public class CardController : MonoBehaviour
         }
         else
         {
-            MoveCardToFirstSlot();
+            if (!gameManager.firstCardsSolved)
+                MoveCardToFirstSlot();
+            else
+                MoveCardToSecondSlot();
             _originalPosition = transform.position;
             StartCoroutine(FindObjectOfType<CameraManager>().NextCameraWithDelay());
         }
@@ -79,7 +84,10 @@ public class CardController : MonoBehaviour
 
     private bool ShouldReturnToHand()
     {
-        return Input.mousePosition.y <= Screen.height / 3 || _firstCardSlot.transform.childCount > 0;
+        return ((gameManager.currentPhase == 1 && _firstCardSlot.transform.childCount > 0) ||
+                (gameManager.currentPhase != 1 && _secondCardSlot.transform.childCount > 0 &&
+                 gameManager.firstCardsSolved) ||
+                Input.mousePosition.y <= Screen.height / 3);
     }
 
     private void MoveCardToFirstSlot()
@@ -92,6 +100,18 @@ public class CardController : MonoBehaviour
         transform.position = _firstCardSlot.transform.position +
                              new Vector3(0, _firstCardSlot.transform.localScale.z, 0);
         transform.rotation = _firstCardSlot.transform.rotation;
+    }
+
+    private void MoveCardToSecondSlot()
+    {
+        var globalScale = transform.lossyScale;
+        transform.SetParent(_secondCardSlot.transform, false);
+        transform.localScale = new Vector3(globalScale.x / transform.parent.lossyScale.x,
+            globalScale.y / transform.parent.lossyScale.y,
+            globalScale.z / transform.parent.lossyScale.z);
+        transform.position = _secondCardSlot.transform.position +
+                             new Vector3(0, _secondCardSlot.transform.localScale.z, 0);
+        transform.rotation = _secondCardSlot.transform.rotation;
     }
 
     private bool IsChildOfCurrentHand()
