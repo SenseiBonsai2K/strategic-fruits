@@ -142,4 +142,4 @@ jobs:
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
         run: |
-          butler push build MacMat01/strategic-fruits:nightly
+          butler push build MacMat01/strategic-fruits:stable
