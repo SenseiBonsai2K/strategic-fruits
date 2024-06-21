@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6642453-13a3-4749-9924-a37877f8c9e2" name="Changes" comment="Updated .gitignore" />
+    <list default="true" id="f6642453-13a3-4749-9924-a37877f8c9e2" name="Changes" comment="Updated .gitignore">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.strategic-fruits/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.strategic-fruits/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/FillHand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/FillHand.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,12 +24,24 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock://C:/Users/crist/UnityProjects/strategic-fruits/Assets/Scenes/GameBoard.unity" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/crist/UnityProjects/strategic-fruits/Assets/Scenes/GameBoard.unity" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/crist/UnityProjects/strategic-fruits/Assets/Scripts/FillHand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/crist/UnityProjects/strategic-fruits/Assets/Scripts/GameManager.cs.meta" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/crist/UnityProjects/strategic-fruits/Assets/Scripts/GameManager.cs.meta" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/crist/UnityProjects/strategic-fruits/Assets/Scripts/GameManager.cs.meta" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/crist/UnityProjects/strategic-fruits/Assets/Scripts/GameManager.cs.meta" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2iBz49Y45DQCnB2jSHK8AlbL6uG" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -31,7 +49,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "wireframing",
+    "git-widget-placeholder": "#11 on wireframing",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
