@@ -16,7 +16,7 @@ public class FillHand : MonoBehaviour
             card.tag = gameObject.tag;
             card.transform.localPosition =
                 new Vector3(cardOffset * (i - 5.5f), yOffset - i * yOffset, zOffset + i * zOffset);
-            card.transform.Rotate(Vector3.right, 50);
+            card.transform.Rotate(Vector3.right, 35);
         }
     }
 
