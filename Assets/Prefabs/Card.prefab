@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8141455627153646235}
   - component: {fileID: 7129634822001781469}
   - component: {fileID: 960209705251422056}
-  - component: {fileID: -6032194580243474648}
+  - component: {fileID: 3482015415123068670}
   m_Layer: 0
   m_Name: Card
   m_TagString: Card
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 426bf8039230e6d4d907a8b26e39201a, type: 2}
+  - {fileID: 2100000, guid: ba5a4e28d7ff8504a876e0b55e979d74, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -106,7 +106,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-6032194580243474648
+--- !u!114 &3482015415123068670
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,9 +115,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 3459568965496369373}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d13868aa6888eb3458536845147e5e26, type: 3}
+  m_Script: {fileID: 11500000, guid: efccfd0b96e8cf54c8a7e6ce8be4220d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstCardSlot: {fileID: 0}
-  secondCardSlot: {fileID: 0}
-  cardsInHand: []
