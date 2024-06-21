@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/StrategicFruits.unity
-    guid: fae477fe648fd1047873efc33e9fe55c
+    path: Assets/Scenes/GameBoard.unity
+    guid: 36d5c1c6d38620245ae0747656ba95e2
   m_configObjects: {}
