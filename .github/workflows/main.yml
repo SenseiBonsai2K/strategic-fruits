@@ -116,6 +116,11 @@ jobs:
         run: ls -R
         working-directory: build
 
+      - name: Delete conflicting branch
+        run: |
+          git branch -D gh-pages/nightly || true
+          git push origin --delete gh-pages/nightly || true
+
       - name: Deploy to GitHub Pages 🚀
         uses: peaceiris/actions-gh-pages@v3
         with:
