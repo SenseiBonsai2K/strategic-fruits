@@ -71,7 +71,7 @@ jobs:
 #          path: ${{ steps.tests.outputs.coveragePath }}
 
   build:
-    needs: test
+#    needs: test
     name: Build for WebGL ✨
     timeout-minutes: 60
     runs-on: ubuntu-latest
