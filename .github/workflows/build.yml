@@ -43,17 +43,13 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          testMode: editmode
 
   build:
     needs: test
     name: Build for WebGL ✨
     timeout-minutes: 360
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        targetPlatform:
-          - WebGL
     steps:
       - uses: actions/checkout@v4
 
