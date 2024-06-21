@@ -109,10 +109,8 @@ public class CardController : MonoBehaviour
         if (_isDragging) return;
 
         // Check if the parent's name ends with "Hand"
-        if (transform.parent && transform.parent.name.EndsWith("Hand"))
-        {
-            transform.position = _originalPosition;
-            transform.localScale = _originalScale;
-        }
+        if (!transform.parent || !transform.parent.name.EndsWith("Hand")) return;
+        transform.position = _originalPosition;
+        transform.localScale = _originalScale;
     }
 }
