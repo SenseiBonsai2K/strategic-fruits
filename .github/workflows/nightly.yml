@@ -6,7 +6,71 @@ on:
       - master
 
 jobs:
+  #  test:
+  #    name: Testing Strategic Fruits 🧪
+  #    runs-on: ubuntu-latest
+  #    timeout-minutes: 360
+  #    strategy:
+  #      fail-fast: false
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #
+  #      - name: Create LFS file list
+  #        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+  #
+  #      - name: Restore LFS cache
+  #        uses: actions/cache@v3
+  #        id: lfs-cache
+  #        with:
+  #          path: .git/lfs
+  #          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+  #
+  #      - name: Git LFS Pull
+  #        run: |
+  #          git lfs pull
+  #          git add .
+  #          git reset --hard
+  #
+  #      - uses: actions/cache@v3
+  #        with:
+  #          path: Library
+  #          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+  #          restore-keys: |
+  #            Library-
+  #
+  #      - uses: game-ci/unity-test-runner@v4
+  #        env:
+  #          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+  #          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+  #          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+  #        with:
+  #          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+  build:
+    #    needs: test
+    name: Build for WebGL ✨
+    timeout-minutes: 360
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - WebGL
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      - name: Restore LFS cache
+        uses: actions/cache@v3
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+          
   deploy_to_itch:
+    needs: build
     name: Deploy to Itch.io 🚀
     runs-on: ubuntu-latest
     timeout-minutes: 360
