@@ -1,4 +1,4 @@
-﻿name: Nightly Build 🌙
+﻿name: Nightly Release 🌙
 
 on:
   push: 
