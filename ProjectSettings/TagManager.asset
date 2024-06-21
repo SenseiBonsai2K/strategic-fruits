@@ -7,6 +7,10 @@ TagManager:
   - Card
   - FirstSlot
   - SecondSlot
+  - Apple
+  - Pear
+  - Banana
+  - Orange
   layers:
   - Default
   - TransparentFX
