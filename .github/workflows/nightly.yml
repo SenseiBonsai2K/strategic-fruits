@@ -1,8 +1,9 @@
 ﻿name: Nightly Build 🌙
 
 on:
-  release:
-    types: [published]
+  push: 
+    branches:
+      - master
 
 jobs:
   deploy_to_itch:
@@ -29,4 +30,4 @@ jobs:
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
         run: |
-          butler push build MacMat01/strategic-fruits:stable
+          butler push build MacMat01/strategic-fruits:nightly
