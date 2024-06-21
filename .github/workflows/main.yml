@@ -15,11 +15,6 @@ jobs:
 #    timeout-minutes: 360
 #    strategy:
 #      fail-fast: false
-#      matrix:
-#        projectPath:
-#          - '.'
-#        unityVersion:
-#          - 2022.3.33f1
 #    steps:
 #      - uses: actions/checkout@v4
 #
@@ -64,10 +59,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        projectPath:
-          - '.'
-        unityVersion:
-          - 2022.3.33f1
         targetPlatform:
           - WebGL
     steps:
@@ -134,3 +125,30 @@ jobs:
         with:
           BRANCH: gh-pages/nightly
           FOLDER: build
+          
+  deploy_to_itch:
+    needs: build
+    name: Deploy to Itch.io 🚀
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: Build
+          path: build
+          
+      - name: Install butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          sudo mv butler /usr/bin/butler
+
+      - name: Push to itch.io
+        env:
+          ITCH_API_KEY: ${{ secrets.ITCH_API_KEY }}
+        run: |
+          butler push build MacMat01/strategic-fruits:nightly
