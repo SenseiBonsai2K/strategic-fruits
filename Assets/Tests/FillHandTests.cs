@@ -1,13 +1,11 @@
 #region
 
-using System.Collections;
 using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 #endregion
-namespace PlayModeTests
+namespace Tests
 {
     public sealed class FillHandTests
     {
@@ -31,7 +29,6 @@ namespace PlayModeTests
         public void Start_GeneratesCorrectNumberOfCards()
         {
             _fillHand.Start();
-
             Assert.AreEqual(12, _fillHand.Cards.Length);
         }
 
@@ -48,12 +45,10 @@ namespace PlayModeTests
             }
         }
 
-        [UnityTest]
-        public IEnumerator Start_CreatesCardGameObjectsWithCorrectNamesAndTags()
+        [Test]
+        public void Start_CreatesCardGameObjectsWithCorrectNamesAndTags()
         {
             _fillHand.Start();
-
-            yield return null;
 
             foreach (GameObject cardGameObject in _fillHand.Cards.Select(static t => GameObject.Find(t.Rank + " of " + t.Suit)))
             {
@@ -62,17 +57,15 @@ namespace PlayModeTests
             }
         }
 
-        [UnityTest]
-        public IEnumerator Start_CreatesCardGameObjectsWithCorrectPositionsAndRotations()
+        [Test]
+        public void Start_CreatesCardGameObjectsWithCorrectPositionsAndRotations()
         {
             _fillHand.Start();
-
-            yield return null;
 
             for (int i = 0; i < _fillHand.Cards.Length; i++)
             {
                 GameObject cardGameObject = GameObject.Find(_fillHand.Cards[i].Rank + " of " + _fillHand.Cards[i].Suit);
-                Vector3 expectedPosition = new Vector3((FillHand.GetXOffset() * (i - 5.5f)), (FillHand.GetYOffset() - i * FillHand.GetYOffset()), (FillHand.GetZOffset() + i * FillHand.GetZOffset()));
+                Vector3 expectedPosition = CalculateExpectedPosition(i);
 
                 Vector3 actualPosition = cardGameObject.transform.localPosition;
 
@@ -82,6 +75,11 @@ namespace PlayModeTests
 
                 Assert.That(cardGameObject.transform.rotation.eulerAngles.x, Is.EqualTo(35).Within(0.1f));
             }
+        }
+
+        private static Vector3 CalculateExpectedPosition(int index)
+        {
+            return new Vector3((FillHand.GetXOffset() * (index - 5.5f)), (FillHand.GetYOffset() - index * FillHand.GetYOffset()), (FillHand.GetZOffset() + index * FillHand.GetZOffset()));
         }
     }
 }
