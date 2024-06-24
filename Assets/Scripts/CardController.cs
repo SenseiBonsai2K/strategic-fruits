@@ -126,14 +126,7 @@ public sealed class CardController : MonoBehaviour
     /// </summary>
     private void MoveCardToSlot()
     {
-        if (!GameManager.FirstCardsSolved)
-        {
-            MoveCardToSlot(_firstCardSlot);
-        }
-        else
-        {
-            MoveCardToSlot(_secondCardSlot);
-        }
+        MoveCardToSlot(!GameManager.FirstCardsSolved ? _firstCardSlot : _secondCardSlot);
     }
 
     /// <summary>
