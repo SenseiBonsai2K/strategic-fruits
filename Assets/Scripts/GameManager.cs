@@ -45,7 +45,7 @@ public sealed class GameManager : MonoBehaviour
     public bool FirstCardsSolved;
 
     //TODO usefully only during testing
-    public List<GameObject> hands;
+    public List<GameObject> Hands;
 
     /// <summary>
     ///     Reference to the FillHand objects in the game.
@@ -63,7 +63,10 @@ public sealed class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (IsCoroutinesRunning) return;
+        if (IsCoroutinesRunning)
+        {
+            return;
+        }
         CheckSlots();
     }
 
@@ -73,9 +76,13 @@ public sealed class GameManager : MonoBehaviour
     private void CheckSlots()
     {
         if (FirstSlotsHaveCard() && !FirstCardsSolved)
+        {
             StartCoroutine(RotateAndDestroyFirstCard());
+        }
         if (FirstSlotsHaveCard() && SecondSlotsHaveCard())
+        {
             StartCoroutine(RotateAndDestroySecondCard());
+        }
     }
 
     /// <summary>
@@ -86,7 +93,10 @@ public sealed class GameManager : MonoBehaviour
         CurrentRound++;
         FirstCardsSolved = false;
 
-        if (ShouldAdvancePhase()) AdvancePhase();
+        if (ShouldAdvancePhase())
+        {
+            AdvancePhase();
+        }
 
         if (CurrentPhase > 3)
         {
@@ -115,7 +125,7 @@ public sealed class GameManager : MonoBehaviour
         CurrentPhase++;
         CurrentRound = 1;
         //TODO usefully only during testing
-        foreach (Transform card in hands.SelectMany(hand => hand.transform.Cast<Transform>())) Destroy(card.gameObject);
+        foreach (Transform card in Hands.SelectMany(static hand => hand.transform.Cast<Transform>())) Destroy(card.gameObject);
 
         FillHands();
     }
@@ -151,19 +161,23 @@ public sealed class GameManager : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         // Move cards up by 2f
-        foreach (var child in slots.Select(slot => slot.transform.GetChild(0)))
+        foreach (Transform child in slots.Select(static slot => slot.transform.GetChild(0)))
+        {
             child.position += new Vector3(0, 0.1f, 0);
+        }
 
         yield return new WaitForSeconds(1);
 
         // Rotate cards around the long side
-        foreach (var child in slots.Select(slot => slot.transform.GetChild(0))) child.Rotate(0, 180, 0);
+        foreach (Transform child in slots.Select(static slot => slot.transform.GetChild(0))) child.Rotate(0, 180, 0);
 
         yield return new WaitForSeconds(1);
 
         // Move cards down by 2f
-        foreach (var child in slots.Select(slot => slot.transform.GetChild(0)))
+        foreach (Transform child in slots.Select(static slot => slot.transform.GetChild(0)))
+        {
             child.position -= new Vector3(0, 0.1f, 0);
+        }
 
         yield return new WaitForSeconds(3);
     }
