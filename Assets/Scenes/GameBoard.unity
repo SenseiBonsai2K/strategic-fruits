@@ -166,10 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f155449b7cc176429c94cf89242eec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardPrefab: {fileID: 3459568965496369373, guid: ed8ef7be98148094dac45d5e9bcf6a23, type: 3}
-  cardOffset: 0.15
-  yOffset: 0.008
-  zOffset: 0.002
+  CardPrefab: {fileID: 3459568965496369373, guid: ed8ef7be98148094dac45d5e9bcf6a23, type: 3}
 --- !u!1 &179559420
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,10 +373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f155449b7cc176429c94cf89242eec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardPrefab: {fileID: 3459568965496369373, guid: ed8ef7be98148094dac45d5e9bcf6a23, type: 3}
-  cardOffset: 0.15
-  yOffset: 0.008
-  zOffset: 0.002
+  CardPrefab: {fileID: 3459568965496369373, guid: ed8ef7be98148094dac45d5e9bcf6a23, type: 3}
 --- !u!1 &412867491
 GameObject:
   m_ObjectHideFlags: 0
@@ -1163,10 +1157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f155449b7cc176429c94cf89242eec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardPrefab: {fileID: 3459568965496369373, guid: ed8ef7be98148094dac45d5e9bcf6a23, type: 3}
-  cardOffset: 0.15
-  yOffset: 0.008
-  zOffset: 0.002
+  CardPrefab: {fileID: 3459568965496369373, guid: ed8ef7be98148094dac45d5e9bcf6a23, type: 3}
 --- !u!1 &1027906770
 GameObject:
   m_ObjectHideFlags: 0
@@ -1995,10 +1986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f155449b7cc176429c94cf89242eec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardPrefab: {fileID: 3459568965496369373, guid: ed8ef7be98148094dac45d5e9bcf6a23, type: 3}
-  cardOffset: 0.15
-  yOffset: 0.008
-  zOffset: 0.002
+  CardPrefab: {fileID: 3459568965496369373, guid: ed8ef7be98148094dac45d5e9bcf6a23, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
