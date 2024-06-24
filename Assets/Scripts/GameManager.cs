@@ -15,8 +15,11 @@ public class GameManager : MonoBehaviour
     [FormerlySerializedAs("firstSlotsSolved")]
     public bool firstCardsSolved;
 
+    private FillHand[] _fillHand;
+
     private void Start()
     {
+        _fillHand = FindObjectsOfType<FillHand>();
         Debug.Log("Phase: " + currentPhase + ", Round: " + currentRound);
     }
 
@@ -34,17 +37,7 @@ public class GameManager : MonoBehaviour
         currentRound++;
         firstCardsSolved = false;
 
-        switch (currentPhase)
-        {
-            case 1 when currentRound > 2:
-                currentPhase++;
-                currentRound = 1;
-                break;
-            case 2 or 3 when currentRound > 6:
-                currentPhase++;
-                currentRound = 1;
-                break;
-        }
+        if (ShouldAdvancePhase()) AdvancePhase();
 
         if (currentPhase > 3)
         {
@@ -52,7 +45,25 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("Phase: " + currentPhase + ", Round: " + currentRound);
+        Debug.Log($"Phase: {currentPhase}, Round: {currentRound}");
+    }
+
+    private bool ShouldAdvancePhase()
+    {
+        return (currentPhase == 1 && currentRound > 2) ||
+               ((currentPhase == 2 || currentPhase == 3) && currentRound > 6);
+    }
+
+    private void AdvancePhase()
+    {
+        currentPhase++;
+        currentRound = 1;
+        FillHands();
+    }
+
+    private void FillHands()
+    {
+        foreach (var fillHand in _fillHand) fillHand.Fill();
     }
 
     private bool FirstSlotsHaveCard()
@@ -88,7 +99,7 @@ public class GameManager : MonoBehaviour
             child.position -= new Vector3(0, 0.1f, 0);
 
         yield return new WaitForSeconds(3);
-        
+
         if (currentPhase == 1)
         {
             foreach (var slot in firstSlots)
@@ -102,35 +113,35 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RotateAndDestroySecondCard()
     {
-            isCoroutinesRunning = true;
+        isCoroutinesRunning = true;
 
-            yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2);
 
-            // Move cards up by 2f
-            foreach (var child in secondSlots.Select(slot => slot.transform.GetChild(0)))
-                child.position += new Vector3(0, 0.1f, 0);
+        // Move cards up by 2f
+        foreach (var child in secondSlots.Select(slot => slot.transform.GetChild(0)))
+            child.position += new Vector3(0, 0.1f, 0);
 
-            yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1);
 
-            // Rotate cards around the long side
-            foreach (var child in secondSlots.Select(slot => slot.transform.GetChild(0))) child.Rotate(0, 180, 0);
+        // Rotate cards around the long side
+        foreach (var child in secondSlots.Select(slot => slot.transform.GetChild(0))) child.Rotate(0, 180, 0);
 
-            yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1);
 
-            // Move cards down by 2f
-            foreach (var child in secondSlots.Select(slot => slot.transform.GetChild(0)))
-                child.position -= new Vector3(0, 0.1f, 0);
+        // Move cards down by 2f
+        foreach (var child in secondSlots.Select(slot => slot.transform.GetChild(0)))
+            child.position -= new Vector3(0, 0.1f, 0);
 
-            yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(3);
 
-            //Distruggi le carte figlie di first slot e secondslot 
-            foreach (var slot in firstSlots)
-                Destroy(slot.transform.GetChild(0).gameObject);
-            foreach (var slot in secondSlots)
-                Destroy(slot.transform.GetChild(0).gameObject);
+        //Distruggi le carte figlie di first slot e secondslot 
+        foreach (var slot in firstSlots)
+            Destroy(slot.transform.GetChild(0).gameObject);
+        foreach (var slot in secondSlots)
+            Destroy(slot.transform.GetChild(0).gameObject);
 
-            AdvanceRound();
+        AdvanceRound();
 
-            isCoroutinesRunning = false;
-        }
+        isCoroutinesRunning = false;
     }
+}

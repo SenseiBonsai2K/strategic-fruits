@@ -8,6 +8,11 @@ public class FillHand : MonoBehaviour
 
     private void Start()
     {
+        Fill();
+    }
+
+    public void Fill()
+    {
         Cards = GenerateCard();
 
         for (var i = 0; i < 12; i++)
