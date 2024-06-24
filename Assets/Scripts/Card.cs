@@ -21,5 +21,5 @@ public class Card
     ///     Gets or sets the content of the card.
     /// </summary>
     /// <value>The content of the card.</value>
-    public Texture Content { get; set; }
+    public Material Content { get; set; }
 }
