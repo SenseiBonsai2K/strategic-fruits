@@ -1,44 +1,48 @@
-﻿using System.Collections;
+﻿#region
+
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+#endregion
+
 /// <summary>
 ///     Manages the game state, including the current phase and round, and handles the game logic.
 /// </summary>
-public class GameManager : MonoBehaviour
+public sealed class GameManager : MonoBehaviour
 {
     /// <summary>
     ///     The current phase of the game.
     /// </summary>
-    public int currentPhase = 1;
+    public int CurrentPhase = 1;
 
     /// <summary>
     ///     The current round of the game.
     /// </summary>
-    public int currentRound = 1;
+    public int CurrentRound = 1;
 
     /// <summary>
     ///     List of the first set of slots in the game.
     /// </summary>
-    public List<GameObject> firstSlots;
+    public List<GameObject> FirstSlots;
 
     /// <summary>
     ///     List of the second set of slots in the game.
     /// </summary>
-    public List<GameObject> secondSlots;
+    public List<GameObject> SecondSlots;
 
     /// <summary>
     ///     Indicates whether coroutines are currently running.
     /// </summary>
-    public bool isCoroutinesRunning;
+    public bool IsCoroutinesRunning;
 
     /// <summary>
     ///     Indicates whether the first set of cards have been solved.
     /// </summary>
     [FormerlySerializedAs("firstSlotsSolved")]
-    public bool firstCardsSolved;
+    public bool FirstCardsSolved;
 
     //TODO usefully only during testing
     public List<GameObject> hands;
@@ -54,21 +58,21 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _fillHand = FindObjectsOfType<FillHand>();
-        Debug.Log("Phase: " + currentPhase + ", Round: " + currentRound);
+        Debug.Log("Phase: " + CurrentPhase + ", Round: " + CurrentRound);
     }
 
     private void Update()
     {
-        if (isCoroutinesRunning) return;
+        if (IsCoroutinesRunning) return;
         CheckSlots();
     }
 
     /// <summary>
-    ///     Checks the first set of slots and starts the card rotation and destruction process if they are all filled.
+    ///     Checks the slots and starts the card rotation and destruction process if they are all filled.
     /// </summary>
     private void CheckSlots()
     {
-        if (FirstSlotsHaveCard() && !firstCardsSolved)
+        if (FirstSlotsHaveCard() && !FirstCardsSolved)
             StartCoroutine(RotateAndDestroyFirstCard());
         if (FirstSlotsHaveCard() && SecondSlotsHaveCard())
             StartCoroutine(RotateAndDestroySecondCard());
@@ -79,18 +83,18 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void AdvanceRound()
     {
-        currentRound++;
-        firstCardsSolved = false;
+        CurrentRound++;
+        FirstCardsSolved = false;
 
         if (ShouldAdvancePhase()) AdvancePhase();
 
-        if (currentPhase > 3)
+        if (CurrentPhase > 3)
         {
             Debug.Log("Game Over!");
             return;
         }
 
-        Debug.Log($"Phase: {currentPhase}, Round: {currentRound}");
+        Debug.Log($"Phase: {CurrentPhase}, Round: {CurrentRound}");
     }
 
     /// <summary>
@@ -99,8 +103,8 @@ public class GameManager : MonoBehaviour
     /// <returns>True if the phase should be advanced, false otherwise.</returns>
     private bool ShouldAdvancePhase()
     {
-        return (currentPhase == 1 && currentRound > 2) ||
-               (currentPhase is 2 or 3 && currentRound > 6);
+        return (CurrentPhase == 1 && CurrentRound > 2) ||
+            (CurrentPhase is 2 or 3 && CurrentRound > 6);
     }
 
     /// <summary>
@@ -108,10 +112,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void AdvancePhase()
     {
-        currentPhase++;
-        currentRound = 1;
+        CurrentPhase++;
+        CurrentRound = 1;
         //TODO usefully only during testing
-        foreach (var card in hands.SelectMany(hand => hand.transform.Cast<Transform>())) Destroy(card.gameObject);
+        foreach (Transform card in hands.SelectMany(hand => hand.transform.Cast<Transform>())) Destroy(card.gameObject);
 
         FillHands();
     }
@@ -121,7 +125,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void FillHands()
     {
-        foreach (var fillHand in _fillHand) fillHand.Fill();
+        foreach (FillHand fillHand in _fillHand) fillHand.Fill();
     }
 
     /// <summary>
@@ -130,7 +134,7 @@ public class GameManager : MonoBehaviour
     /// <returns>True if all the first slots have a card, false otherwise.</returns>
     private bool FirstSlotsHaveCard()
     {
-        return firstSlots.All(slot => slot.transform.childCount > 0);
+        return FirstSlots.All(static slot => slot.transform.childCount > 0);
     }
 
     /// <summary>
@@ -139,7 +143,7 @@ public class GameManager : MonoBehaviour
     /// <returns>True if all the second slots have a card, false otherwise.</returns>
     private bool SecondSlotsHaveCard()
     {
-        return secondSlots.All(slot => slot.transform.childCount > 0);
+        return SecondSlots.All(static slot => slot.transform.childCount > 0);
     }
 
     private IEnumerator AnimateCard(List<GameObject> slots)
@@ -170,20 +174,20 @@ public class GameManager : MonoBehaviour
     /// <returns>An IEnumerator to be used in a coroutine.</returns>
     private IEnumerator RotateAndDestroyFirstCard()
     {
-        isCoroutinesRunning = true;
-        firstCardsSolved = true;
+        IsCoroutinesRunning = true;
+        FirstCardsSolved = true;
 
-        yield return AnimateCard(firstSlots);
+        yield return AnimateCard(FirstSlots);
 
         // Destroy the cards in the first slot
-        if (currentPhase == 1)
+        if (CurrentPhase == 1)
         {
-            foreach (var slot in firstSlots)
+            foreach (GameObject slot in FirstSlots)
                 Destroy(slot.transform.GetChild(0).gameObject);
             AdvanceRound();
         }
 
-        isCoroutinesRunning = false;
+        IsCoroutinesRunning = false;
     }
 
 
@@ -193,18 +197,18 @@ public class GameManager : MonoBehaviour
     /// <returns>An IEnumerator to be used in a coroutine.</returns>
     private IEnumerator RotateAndDestroySecondCard()
     {
-        isCoroutinesRunning = true;
+        IsCoroutinesRunning = true;
 
-        yield return AnimateCard(secondSlots);
+        yield return AnimateCard(SecondSlots);
 
         //Destroy the cards in the slots
-        foreach (var slot in firstSlots)
+        foreach (GameObject slot in FirstSlots)
             Destroy(slot.transform.GetChild(0).gameObject);
-        foreach (var slot in secondSlots)
+        foreach (GameObject slot in SecondSlots)
             Destroy(slot.transform.GetChild(0).gameObject);
 
         AdvanceRound();
 
-        isCoroutinesRunning = false;
+        IsCoroutinesRunning = false;
     }
 }
