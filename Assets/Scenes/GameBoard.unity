@@ -628,20 +628,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c10a142c48614e95b6be6ec3b9ab47ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPhase: 1
-  currentRound: 1
-  firstSlots:
-  - {fileID: 1027906770}
-  - {fileID: 1235241934}
-  - {fileID: 1342408775}
-  - {fileID: 1449367669}
-  secondSlots:
-  - {fileID: 451484511}
-  - {fileID: 1228418201}
-  - {fileID: 1708561537}
-  - {fileID: 412867491}
-  isCoroutinesRunning: 0
-  firstCardsSolved: 0
+  CurrentPhase: 1
+  CurrentRound: 1
+  FirstSlots: []
+  SecondSlots: []
+  IsCoroutinesRunning: 0
+  FirstCardsSolved: 0
+  Hands: []
 --- !u!1 &546714026
 GameObject:
   m_ObjectHideFlags: 0
@@ -1607,11 +1600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2480e2780257cc049b5046ce11cb790f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameras:
-  - {fileID: 797294675}
-  - {fileID: 963194227}
-  - {fileID: 643132767}
-  - {fileID: 352318168}
+  Cameras: []
 --- !u!4 &1426222476
 Transform:
   m_ObjectHideFlags: 0
