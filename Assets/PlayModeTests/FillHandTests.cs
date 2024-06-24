@@ -18,7 +18,7 @@ namespace PlayModeTests
         {
             GameObject fillHandGameObject = new GameObject();
             _fillHand = fillHandGameObject.AddComponent<FillHand>();
-            _fillHand.cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
+            _fillHand.CardPrefab = Resources.Load<GameObject>("Prefabs/Card");
         }
 
         [TearDown]

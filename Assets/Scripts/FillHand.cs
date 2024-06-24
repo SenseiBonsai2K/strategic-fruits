@@ -5,6 +5,7 @@ using UnityEngine;
 
 #endregion
 
+
 /// <summary>
 ///     This class is responsible for filling the hand with cards in the game.
 /// </summary>
@@ -40,15 +41,19 @@ public sealed class FillHand : MonoBehaviour
         Cards = GenerateCard();
 
         // Instantiate a card prefab for each card in the array
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < Cards.Length; i++)
         {
             GameObject card = Instantiate(CardPrefab, transform, false);
-            card.name = Cards[i].Rank + " of " + Cards[i].Suit; // Use Rank as name, for example
+            card.name = Cards[i].Rank + " of " + Cards[i].Suit;
             card.tag = gameObject.tag;
-            card.transform.localPosition =
-                new Vector3((XOffset * (i - 5.5f)), (YOffset - i * YOffset), (ZOffset + i * ZOffset));
+            card.transform.localPosition = CalculateCardPosition(i);
             card.transform.Rotate(Vector3.right, 35);
         }
+    }
+
+    private static Vector3 CalculateCardPosition(int index)
+    {
+        return new Vector3((XOffset * (index - 5.5f)), (YOffset - index * YOffset), (ZOffset + index * ZOffset));
     }
 
 
@@ -65,78 +70,29 @@ public sealed class FillHand : MonoBehaviour
         // Return an array of 12 cards with different ranks and suits
         return new[]
         {
-            new Card
-            {
-                Rank = 1,
-                Suit = gameObjectTag,
-                Content = Resources.Load<Texture>("Textures/1 " + gameObjectTag)
-            },
-            new Card
-            {
-                Rank = 1,
-                Suit = gameObjectTag,
-                Content = Resources.Load<Texture>("Textures/1 " + gameObjectTag)
-            },
-            new Card
-            {
-                Rank = 1,
-                Suit = gameObjectTag,
-                Content = Resources.Load<Texture>("Textures/1 " + gameObjectTag)
-            },
-            new Card
-            {
-                Rank = 1,
-                Suit = gameObjectTag,
-                Content = Resources.Load<Texture>("Textures/1 " + gameObjectTag)
-            },
-            new Card
-            {
-                Rank = 2,
-                Suit = gameObjectTag,
-                Content = Resources.Load<Texture>("Textures/2 " + gameObjectTag)
-            },
-            new Card
-            {
-                Rank = 2,
-                Suit = gameObjectTag,
-                Content = Resources.Load<Texture>("Textures/2 " + gameObjectTag)
-            },
-            new Card
-            {
-                Rank = 2,
-                Suit = gameObjectTag,
-                Content = Resources.Load<Texture>("Textures/2 " + gameObjectTag)
-            },
-            new Card
-            {
-                Rank = 3,
-                Suit = gameObjectTag,
-                Content = Resources.Load<Texture>("Textures/3 " + gameObjectTag)
-            },
-            new Card
-            {
-                Rank = 3,
-                Suit = gameObjectTag,
-                Content = Resources.Load<Texture>("Textures/3 " + gameObjectTag)
-            },
-            new Card
-            {
-                Rank = 4,
-                Suit = gameObjectTag,
-                Content = Resources.Load<Texture>("Textures/4 " + gameObjectTag)
-            },
-            new Card
-            {
-                Rank = 4,
-                Suit = gameObjectTag,
-                Content = Resources.Load<Texture>("Textures/4 " + gameObjectTag)
-            },
-            new Card
-            {
-                Rank = 5,
-                Suit = gameObjectTag,
-                Content = Resources.Load<Texture>("Textures/5 " + gameObjectTag)
-            }
+            CreateCard(1, gameObjectTag),
+            CreateCard(1, gameObjectTag),
+            CreateCard(1, gameObjectTag),
+            CreateCard(1, gameObjectTag),
+            CreateCard(2, gameObjectTag),
+            CreateCard(2, gameObjectTag),
+            CreateCard(2, gameObjectTag),
+            CreateCard(3, gameObjectTag),
+            CreateCard(3, gameObjectTag),
+            CreateCard(4, gameObjectTag),
+            CreateCard(4, gameObjectTag),
+            CreateCard(5, gameObjectTag)
+        };
+    }
+
+    [NotNull]
+    private static Card CreateCard(int rank, string suit)
+    {
+        return new Card
+        {
+            Rank = rank,
+            Suit = suit,
+            Content = Resources.Load<Texture>("Textures/" + rank + " " + suit)
         };
     }
 
