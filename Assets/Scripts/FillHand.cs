@@ -60,80 +60,82 @@ public sealed class FillHand : MonoBehaviour
     [NotNull]
     private Card[] GenerateCard()
     {
+        string gameObjectTag = gameObject.tag;
+
         // Return an array of 12 cards with different ranks and suits
         return new[]
         {
             new Card
             {
                 Rank = 1,
-                Suit = gameObject.tag,
-                Content = Resources.Load<Texture>("Textures/1 " + gameObject.tag)
+                Suit = gameObjectTag,
+                Content = Resources.Load<Texture>("Textures/1 " + gameObjectTag)
             },
             new Card
             {
                 Rank = 1,
-                Suit = gameObject.tag,
-                Content = Resources.Load<Texture>("Textures/1 " + gameObject.tag)
+                Suit = gameObjectTag,
+                Content = Resources.Load<Texture>("Textures/1 " + gameObjectTag)
             },
             new Card
             {
                 Rank = 1,
-                Suit = gameObject.tag,
-                Content = Resources.Load<Texture>("Textures/1 " + gameObject.tag)
+                Suit = gameObjectTag,
+                Content = Resources.Load<Texture>("Textures/1 " + gameObjectTag)
             },
             new Card
             {
                 Rank = 1,
-                Suit = gameObject.tag,
-                Content = Resources.Load<Texture>("Textures/1 " + gameObject.tag)
+                Suit = gameObjectTag,
+                Content = Resources.Load<Texture>("Textures/1 " + gameObjectTag)
             },
             new Card
             {
                 Rank = 2,
-                Suit = gameObject.tag,
-                Content = Resources.Load<Texture>("Textures/2 " + gameObject.tag)
+                Suit = gameObjectTag,
+                Content = Resources.Load<Texture>("Textures/2 " + gameObjectTag)
             },
             new Card
             {
                 Rank = 2,
-                Suit = gameObject.tag,
-                Content = Resources.Load<Texture>("Textures/2 " + gameObject.tag)
+                Suit = gameObjectTag,
+                Content = Resources.Load<Texture>("Textures/2 " + gameObjectTag)
             },
             new Card
             {
                 Rank = 2,
-                Suit = gameObject.tag,
-                Content = Resources.Load<Texture>("Textures/2 " + gameObject.tag)
+                Suit = gameObjectTag,
+                Content = Resources.Load<Texture>("Textures/2 " + gameObjectTag)
             },
             new Card
             {
                 Rank = 3,
-                Suit = gameObject.tag,
-                Content = Resources.Load<Texture>("Textures/3 " + gameObject.tag)
+                Suit = gameObjectTag,
+                Content = Resources.Load<Texture>("Textures/3 " + gameObjectTag)
             },
             new Card
             {
                 Rank = 3,
-                Suit = gameObject.tag,
-                Content = Resources.Load<Texture>("Textures/3 " + gameObject.tag)
+                Suit = gameObjectTag,
+                Content = Resources.Load<Texture>("Textures/3 " + gameObjectTag)
             },
             new Card
             {
                 Rank = 4,
-                Suit = gameObject.tag,
-                Content = Resources.Load<Texture>("Textures/4 " + gameObject.tag)
+                Suit = gameObjectTag,
+                Content = Resources.Load<Texture>("Textures/4 " + gameObjectTag)
             },
             new Card
             {
                 Rank = 4,
-                Suit = gameObject.tag,
-                Content = Resources.Load<Texture>("Textures/4 " + gameObject.tag)
+                Suit = gameObjectTag,
+                Content = Resources.Load<Texture>("Textures/4 " + gameObjectTag)
             },
             new Card
             {
                 Rank = 5,
-                Suit = gameObject.tag,
-                Content = Resources.Load<Texture>("Textures/5 " + gameObject.tag)
+                Suit = gameObjectTag,
+                Content = Resources.Load<Texture>("Textures/5 " + gameObjectTag)
             }
         };
     }
