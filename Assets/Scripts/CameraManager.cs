@@ -34,7 +34,7 @@ public sealed class CameraManager : MonoBehaviour
     ///     Returns the currently active camera.
     /// </summary>
     /// <returns>The currently active camera.</returns>
-    internal Camera GetCurrentCamera()
+    public Camera GetCurrentCamera()
     {
         return Cameras[_currentCameraIndex];
     }
