@@ -73,9 +73,13 @@ namespace PlayModeTests
             {
                 GameObject cardGameObject = GameObject.Find(_fillHand.Cards[i].Rank + " of " + _fillHand.Cards[i].Suit);
                 Vector3 expectedPosition = new Vector3((FillHand.GetXOffset() * (i - 5.5f)), (FillHand.GetYOffset() - i * FillHand.GetYOffset()), (FillHand.GetZOffset() + i * FillHand.GetZOffset()));
-                Assert.That(cardGameObject.transform.localPosition.x, Is.EqualTo(expectedPosition.x).Within(0.5f));
-                Assert.That(cardGameObject.transform.localPosition.y, Is.EqualTo(expectedPosition.y).Within(0.1f));
-                Assert.That(cardGameObject.transform.localPosition.z, Is.EqualTo(expectedPosition.z).Within(0.1f));
+
+                Vector3 actualPosition = cardGameObject.transform.localPosition;
+
+                Assert.That(actualPosition.x, Is.EqualTo(expectedPosition.x).Within(0.5f));
+                Assert.That(actualPosition.y, Is.EqualTo(expectedPosition.y).Within(0.1f));
+                Assert.That(actualPosition.z, Is.EqualTo(expectedPosition.z).Within(0.1f));
+
                 Assert.That(cardGameObject.transform.rotation.eulerAngles.x, Is.EqualTo(35).Within(0.1f));
             }
         }
