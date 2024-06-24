@@ -72,4 +72,4 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Custom build folder
-workspace.xml
+.idea/.idea.strategic-fruits/.idea/workspace.xml
