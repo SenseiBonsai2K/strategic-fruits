@@ -16,7 +16,7 @@ public sealed class FillHand : MonoBehaviour
     private const float ZOffset = 0.002f;
 
     // The card prefab to be instantiated
-    public GameObject cardPrefab;
+    public GameObject CardPrefab;
 
     // The array of cards in the hand
     public Card[] Cards { get; private set; }
@@ -34,19 +34,19 @@ public sealed class FillHand : MonoBehaviour
     ///     This method fills the hand with cards.
     ///     It generates an array of cards and instantiates a card prefab for each card in the array.
     /// </summary>
-    public void Fill()
+    internal void Fill()
     {
         // Generate the array of cards
         Cards = GenerateCard();
 
         // Instantiate a card prefab for each card in the array
-        for (var i = 0; i < 12; i++)
+        for (int i = 0; i < 12; i++)
         {
-            var card = Instantiate(cardPrefab, transform, false);
+            GameObject card = Instantiate(CardPrefab, transform, false);
             card.name = Cards[i].Rank + " of " + Cards[i].Suit; // Use Rank as name, for example
             card.tag = gameObject.tag;
             card.transform.localPosition =
-                new Vector3(XOffset * (i - 5.5f), YOffset - i * YOffset, ZOffset + i * ZOffset);
+                new Vector3((XOffset * (i - 5.5f)), (YOffset - i * YOffset), (ZOffset + i * ZOffset));
             card.transform.Rotate(Vector3.right, 35);
         }
     }
