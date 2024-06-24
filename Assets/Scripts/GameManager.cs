@@ -40,6 +40,9 @@ public class GameManager : MonoBehaviour
     [FormerlySerializedAs("firstSlotsSolved")]
     public bool firstCardsSolved;
 
+    //TODO usefully only during testing
+    public List<GameObject> hands;
+
     /// <summary>
     ///     Reference to the FillHand objects in the game.
     /// </summary>
@@ -54,30 +57,19 @@ public class GameManager : MonoBehaviour
         Debug.Log("Phase: " + currentPhase + ", Round: " + currentRound);
     }
 
-    /// <summary>
-    ///     Updates the GameManager every frame.
-    /// </summary>
     private void Update()
     {
         if (isCoroutinesRunning) return;
-        CheckFirstSlots();
-        CheckSecondSlots();
+        CheckSlots();
     }
 
     /// <summary>
     ///     Checks the first set of slots and starts the card rotation and destruction process if they are all filled.
     /// </summary>
-    private void CheckFirstSlots()
+    private void CheckSlots()
     {
         if (FirstSlotsHaveCard() && !firstCardsSolved)
             StartCoroutine(RotateAndDestroyFirstCard());
-    }
-
-    /// <summary>
-    ///     Checks the second set of slots and starts the card rotation and destruction process if they are all filled.
-    /// </summary>
-    private void CheckSecondSlots()
-    {
         if (FirstSlotsHaveCard() && SecondSlotsHaveCard())
             StartCoroutine(RotateAndDestroySecondCard());
     }
@@ -108,7 +100,7 @@ public class GameManager : MonoBehaviour
     private bool ShouldAdvancePhase()
     {
         return (currentPhase == 1 && currentRound > 2) ||
-               ((currentPhase == 2 || currentPhase == 3) && currentRound > 6);
+               (currentPhase is 2 or 3 && currentRound > 6);
     }
 
     /// <summary>
@@ -118,6 +110,9 @@ public class GameManager : MonoBehaviour
     {
         currentPhase++;
         currentRound = 1;
+        //TODO usefully only during testing
+        foreach (var card in hands.SelectMany(hand => hand.transform.Cast<Transform>())) Destroy(card.gameObject);
+
         FillHands();
     }
 
@@ -147,6 +142,28 @@ public class GameManager : MonoBehaviour
         return secondSlots.All(slot => slot.transform.childCount > 0);
     }
 
+    private IEnumerator AnimateCard(List<GameObject> slots)
+    {
+        yield return new WaitForSeconds(2);
+
+        // Move cards up by 2f
+        foreach (var child in slots.Select(slot => slot.transform.GetChild(0)))
+            child.position += new Vector3(0, 0.1f, 0);
+
+        yield return new WaitForSeconds(1);
+
+        // Rotate cards around the long side
+        foreach (var child in slots.Select(slot => slot.transform.GetChild(0))) child.Rotate(0, 180, 0);
+
+        yield return new WaitForSeconds(1);
+
+        // Move cards down by 2f
+        foreach (var child in slots.Select(slot => slot.transform.GetChild(0)))
+            child.position -= new Vector3(0, 0.1f, 0);
+
+        yield return new WaitForSeconds(3);
+    }
+
     /// <summary>
     ///     Rotates and destroys the first set of cards after a delay.
     /// </summary>
@@ -156,25 +173,9 @@ public class GameManager : MonoBehaviour
         isCoroutinesRunning = true;
         firstCardsSolved = true;
 
-        yield return new WaitForSeconds(2);
+        yield return AnimateCard(firstSlots);
 
-        // Move cards up by 2f
-        foreach (var child in firstSlots.Select(slot => slot.transform.GetChild(0)))
-            child.position += new Vector3(0, 0.1f, 0);
-
-        yield return new WaitForSeconds(1);
-
-        // Rotate cards around the long side
-        foreach (var child in firstSlots.Select(slot => slot.transform.GetChild(0))) child.Rotate(0, 180, 0);
-
-        yield return new WaitForSeconds(1);
-
-        // Move cards down by 2f
-        foreach (var child in firstSlots.Select(slot => slot.transform.GetChild(0)))
-            child.position -= new Vector3(0, 0.1f, 0);
-
-        yield return new WaitForSeconds(3);
-
+        // Destroy the cards in the first slot
         if (currentPhase == 1)
         {
             foreach (var slot in firstSlots)
@@ -194,24 +195,7 @@ public class GameManager : MonoBehaviour
     {
         isCoroutinesRunning = true;
 
-        yield return new WaitForSeconds(2);
-
-        // Move cards up by 2f
-        foreach (var child in secondSlots.Select(slot => slot.transform.GetChild(0)))
-            child.position += new Vector3(0, 0.1f, 0);
-
-        yield return new WaitForSeconds(1);
-
-        // Rotate cards around the long side
-        foreach (var child in secondSlots.Select(slot => slot.transform.GetChild(0))) child.Rotate(0, 180, 0);
-
-        yield return new WaitForSeconds(1);
-
-        // Move cards down by 2f
-        foreach (var child in secondSlots.Select(slot => slot.transform.GetChild(0)))
-            child.position -= new Vector3(0, 0.1f, 0);
-
-        yield return new WaitForSeconds(3);
+        yield return AnimateCard(secondSlots);
 
         //Destroy the cards in the slots
         foreach (var slot in firstSlots)
