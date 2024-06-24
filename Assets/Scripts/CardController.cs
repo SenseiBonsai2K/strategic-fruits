@@ -70,15 +70,28 @@ public class CardController : MonoBehaviour
         if (ShouldReturnToHand())
         {
             transform.position = _originalPosition;
+            return;
+        }
+
+        if (gameManager.isCoroutinesRunning)
+        {
+            return;
+        }
+
+        MoveCardToSlot();
+        _originalPosition = transform.position;
+        StartCoroutine(FindObjectOfType<CameraManager>().NextCameraWithDelay());
+    }
+
+    private void MoveCardToSlot()
+    {
+        if (!gameManager.firstCardsSolved)
+        {
+            MoveCardToFirstSlot();
         }
         else
         {
-            if (!gameManager.firstCardsSolved)
-                MoveCardToFirstSlot();
-            else
-                MoveCardToSecondSlot();
-            _originalPosition = transform.position;
-            StartCoroutine(FindObjectOfType<CameraManager>().NextCameraWithDelay());
+            MoveCardToSecondSlot();
         }
     }
 
