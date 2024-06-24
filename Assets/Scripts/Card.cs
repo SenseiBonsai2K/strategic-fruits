@@ -1,8 +1,28 @@
-﻿using UnityEngine;
+﻿#region
 
-public class Card
+using UnityEngine;
+
+#endregion
+/// <summary>
+///     Represents a playing card.
+/// </summary>
+public sealed class Card
 {
-    public int Rank { get; set; }
-    public string Suit { get; set; }
+    /// <summary>
+    ///     Gets or sets the rank of the card.
+    /// </summary>
+    /// <value>The rank of the card.</value>
+    public int Rank { get; internal set; }
+
+    /// <summary>
+    ///     Gets or sets the suit of the card.
+    /// </summary>
+    /// <value>The suit of the card.</value>
+    public string Suit { get; internal set; }
+
+    /// <summary>
+    ///     Gets or sets the content of the card.
+    /// </summary>
+    /// <value>The content of the card.</value>
     public Texture Content { get; set; }
 }

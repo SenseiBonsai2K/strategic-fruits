@@ -1,4 +1,4 @@
-﻿﻿#region
+﻿#region
 
 using JetBrains.Annotations;
 using UnityEngine;
