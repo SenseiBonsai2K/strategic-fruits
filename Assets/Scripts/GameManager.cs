@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 #endregion
 
@@ -16,12 +15,12 @@ public sealed class GameManager : MonoBehaviour
     /// <summary>
     ///     The current phase of the game.
     /// </summary>
-    public int CurrentPhase = 1;
+    public static int CurrentPhase = 1;
 
     /// <summary>
     ///     The current round of the game.
     /// </summary>
-    public int CurrentRound = 1;
+    public static int CurrentRound = 1;
 
     /// <summary>
     ///     List of the first set of slots in the game.
@@ -41,10 +40,8 @@ public sealed class GameManager : MonoBehaviour
     /// <summary>
     ///     Indicates whether the first set of cards have been solved.
     /// </summary>
-    [FormerlySerializedAs("firstSlotsSolved")]
     public bool FirstCardsSolved;
-
-    //TODO usefully only during testing
+    
     public List<GameObject> Hands;
 
     /// <summary>
@@ -126,7 +123,6 @@ public sealed class GameManager : MonoBehaviour
     {
         CurrentPhase++;
         CurrentRound = 1;
-        //TODO usefully only during testing
         foreach (Transform card in Hands.SelectMany(static hand => hand.transform.Cast<Transform>())) Destroy(card.gameObject);
 
         FillHands();
