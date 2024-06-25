@@ -30,22 +30,42 @@ public class MatchManager
     {
         _players.Clear();
 
-        if (currentPhase == 1)
-            foreach ((var card, var _) in CardTracker.PlayedCards)
-            {
-                var player = new Player(card.Suit, card.Rank);
-                _players.Add(player);
-            }
-
-        if (currentPhase == 2)
+        switch (currentPhase)
         {
-            // Get the last four cards
-            var lastFourCards = CardTracker.PlayedCards.Skip(Math.Max(0, CardTracker.PlayedCards.Count - 4));
-
-            foreach ((var card, var _) in lastFourCards)
+            case 1:
             {
-                var player = new Player(card.Suit, card.Rank);
-                _players.Add(player);
+                foreach ((var card, var _) in CardTracker.PlayedCards)
+                {
+                    var player = new Player(card.Suit, card.Rank);
+                    _players.Add(player);
+                }
+
+                break;
+            }
+            case 2:
+            {
+                // Get the last four cards
+                var lastFourCards = CardTracker.PlayedCards.Skip(Math.Max(0, CardTracker.PlayedCards.Count - 4));
+
+                foreach ((var card, var _) in lastFourCards)
+                {
+                    var player = new Player(card.Suit, card.Rank);
+                    _players.Add(player);
+                }
+
+                break;
+            }
+            case 3:
+            {
+                var groupedCards = CardTracker.PlayedCards.GroupBy(card => card.Item1.Suit);
+
+                foreach (var group in groupedCards)
+                {
+                    var player = new Player(group.Key, group.Sum(card => card.Item1.Rank));
+                    _players.Add(player);
+                }
+
+                break;
             }
         }
 
@@ -87,11 +107,9 @@ public class MatchManager
 
         return player1.Rank > player2.Rank ? player1 : player2;
     }
-    
+
     private static Player CheckPhase3Winner(Player player1, Player player2)
     {
-        
-
         return player1.Rank > player2.Rank ? player1 : player2;
     }
 }
