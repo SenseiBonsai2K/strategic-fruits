@@ -1,8 +1,9 @@
-﻿name: Stable Release 🚀
+﻿name: Nightly Release 🌙
 
 on:
-  release:
-    types: [published]
+  push: 
+    branches:
+      - master
 
 jobs:
   test:
@@ -116,7 +117,7 @@ jobs:
         with:
           name: Build-WebGL
           path: build/WebGL
-  
+          
   deploy_to_itch:
     needs: build
     name: Deploy to Itch.io 🚀
@@ -142,4 +143,4 @@ jobs:
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
         run: |
-          butler push build MacMat01/strategic-fruits:stable
+          butler push build MacMat01/strategic-fruits:nightly

@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Card
+  - FirstSlot
+  - SecondSlot
+  - Apple
+  - Pear
+  - Banana
+  - Orange
   layers:
   - Default
   - TransparentFX
