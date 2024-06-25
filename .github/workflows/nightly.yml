@@ -129,8 +129,8 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: Build
-          path: build
+          name: Build-WebGL
+          path: build-WebGL
 
       - name: Install butler
         run: |
