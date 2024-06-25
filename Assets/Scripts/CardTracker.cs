@@ -16,7 +16,7 @@ public class CardTracker : MonoBehaviour
     ///     A list of tuples, each containing a Card that was played and the time elapsed since the start of the round when the
     ///     card was played.
     /// </summary>
-    private static readonly List<(Card, float)> PlayedCards = new();
+    public static readonly List<(Card, float)> PlayedCards = new();
 
     /// <summary>
     ///     Saves a card and the time elapsed since the start of the round to the PlayedCards list.
@@ -28,6 +28,9 @@ public class CardTracker : MonoBehaviour
         PlayedCards.Add((card, timeElapsed));
 
         Debug.Log($"Card saved: {card.Rank} of {card.Suit}, Time elapsed: {timeElapsed}");
+        
+        if ((GameManager.CurrentPhase == 1 && PlayedCards.Count == 4) || (GameManager.CurrentPhase != 1 && PlayedCards.Count == 8))
+            MatchManager.GetRoundWinners(GameManager.CurrentRound, GameManager.CurrentPhase);
     }
 
     /// <summary>
@@ -37,6 +40,5 @@ public class CardTracker : MonoBehaviour
     {
         PlayedCards.Clear();
         _roundStartTime = Time.time;
-        Debug.Log("Played cards cleared and time reset.");
     }
 }
