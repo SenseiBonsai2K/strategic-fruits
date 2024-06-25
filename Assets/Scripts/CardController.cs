@@ -40,6 +40,7 @@ public sealed class CardController : MonoBehaviour
         {
             return;
         }
+
         _isDragging = true;
         transform.localScale = _originalScale;
         Camera currentCamera = FindObjectOfType<CameraManager>().GetCurrentCamera();
@@ -53,6 +54,7 @@ public sealed class CardController : MonoBehaviour
         {
             return;
         }
+
         _isDragging = true;
         Camera currentCamera = FindObjectOfType<CameraManager>().GetCurrentCamera();
         Vector3 curPosition = GetWorldPositionFromMouse(currentCamera) + _offset;
@@ -65,6 +67,7 @@ public sealed class CardController : MonoBehaviour
         {
             return;
         }
+
         transform.position = _originalPosition;
         transform.localScale = _originalScale;
     }
@@ -75,6 +78,7 @@ public sealed class CardController : MonoBehaviour
         {
             return;
         }
+
         UpdateTransform(_originalPosition + new Vector3(0, _hoverAmount / 2, 0),
             _originalScale + new Vector3(_hoverAmount / 3, _hoverAmount / 3, 0));
     }
@@ -82,7 +86,7 @@ public sealed class CardController : MonoBehaviour
     private void OnMouseUp()
     {
         _isDragging = false;
-
+        if (!IsChildOfCurrentHand()) return;
         if (ShouldReturnToHand())
         {
             UpdateTransform(_originalPosition, _originalScale);
@@ -136,9 +140,9 @@ public sealed class CardController : MonoBehaviour
     private bool ShouldReturnToHand()
     {
         return (GameManager.CurrentPhase == 1 && _firstCardSlot.transform.childCount > 0) ||
-            (GameManager.CurrentPhase != 1 && _secondCardSlot.transform.childCount > 0 &&
-            GameManager.FirstCardsSolved) ||
-            Input.mousePosition.y <= Screen.height / 3;
+               (GameManager.CurrentPhase != 1 && _secondCardSlot.transform.childCount > 0 &&
+                GameManager.FirstCardsSolved) ||
+               Input.mousePosition.y <= Screen.height / 3;
     }
 
     /// <summary>
@@ -153,8 +157,8 @@ public sealed class CardController : MonoBehaviour
             globalScale.y / transform.parent.lossyScale.y,
             globalScale.z / transform.parent.lossyScale.z);
         transform.position = slot.transform.position +
-            new Vector3(0, slot.transform.localScale.z, 0);
-        transform.rotation = slot.transform.rotation;
+                             new Vector3(0, slot.transform.localScale.z, 0);
+       transform.rotation = slot.transform.rotation * Quaternion.Euler(0, 180, 0);
     }
 
     /// <summary>
@@ -177,37 +181,46 @@ public sealed class CardController : MonoBehaviour
         {
             return;
         }
+
         if (!transform.parent || !transform.parent.name.EndsWith("Hand", StringComparison.Ordinal))
         {
             return;
         }
+
         transform.position = _originalPosition;
         transform.localScale = _originalScale;
     }
+
     public void InvokeOnMouseDown()
     {
         OnMouseDown();
     }
+
     public bool? IsDragging()
     {
         return _isDragging;
     }
+
     public void InvokeOnMouseUp()
     {
         OnMouseUp();
     }
+
     public void InvokeOnMouseOver()
     {
         OnMouseOver();
     }
+
     public Vector3 GetOriginalScale()
     {
         return _originalScale;
     }
+
     public void InvokeOnMouseExit()
     {
         OnMouseExit();
     }
+
     public void InvokeResetHover()
     {
         ResetHover();
