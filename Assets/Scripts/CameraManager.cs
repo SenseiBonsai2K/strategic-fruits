@@ -63,4 +63,14 @@ public sealed class CameraManager : MonoBehaviour
     {
         foreach (Camera cameras in Cameras) cameras.gameObject.SetActive(cameras == Cameras[index]);
     }
+
+    public IEnumerator InvokeNextCameraWithDelay()
+    {
+        return NextCameraWithDelay();
+    }
+
+    public void InvokeSetActiveCamera(int index)
+    {
+        SetActiveCamera(index);
+    }
 }
