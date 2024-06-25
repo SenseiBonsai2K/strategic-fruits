@@ -41,14 +41,19 @@ public sealed class FillHand : MonoBehaviour
         Cards = GenerateCard();
 
         // Instantiate a card prefab for each card in the array
+        // Instantiate a card prefab for each card in the array
         for (int i = 0; i < Cards.Length; i++)
         {
-            GameObject card = Instantiate(CardPrefab, transform, false);
-            card.name = Cards[i].Rank + " of " + Cards[i].Suit;
-            card.tag = gameObject.tag;
-            card.GetComponent<Renderer>().material = Cards[i].Content;
-            card.transform.localPosition = CalculateCardPosition(i);
-            card.transform.Rotate(Vector3.right, 35);
+            GameObject cardObject = Instantiate(CardPrefab, transform, false);
+            cardObject.name = Cards[i].Rank + " of " + Cards[i].Suit;
+            cardObject.tag = gameObject.tag;
+            cardObject.GetComponent<Renderer>().material = Cards[i].Content;
+            cardObject.transform.localPosition = CalculateCardPosition(i);
+            cardObject.transform.Rotate(Vector3.right, 35);
+
+            // Set the Card property of the CardController
+            CardManager cardManager = cardObject.GetComponent<CardManager>();
+            cardManager.Card = Cards[i];
         }
     }
 
@@ -89,12 +94,12 @@ public sealed class FillHand : MonoBehaviour
     [NotNull]
     private static Card CreateCard(int rank, string suit)
     {
-            return new Card
-            {
-                Rank = rank,
-                Suit = suit,
-                Content = Resources.Load<Material>("Materials/" + rank + "/" + rank + "_" + suit)
-            };
+        return new Card
+        {
+            Rank = rank,
+            Suit = suit,
+            Content = Resources.Load<Material>("Materials/" + rank + "/" + rank + "_" + suit)
+        };
     }
 
     /// <summary>

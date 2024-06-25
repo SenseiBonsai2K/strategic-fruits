@@ -49,7 +49,7 @@ public sealed class CameraManager : MonoBehaviour
 
         Cameras[_currentCameraIndex].gameObject.SetActive(false);
 
-        foreach (CardController card in FindObjectsOfType<CardController>()) card.ResetHover();
+        foreach (CardManager card in FindObjectsOfType<CardManager>()) card.ResetHover();
 
         _currentCameraIndex = (_currentCameraIndex + 1) % Cameras.Count;
         SetActiveCamera(_currentCameraIndex);

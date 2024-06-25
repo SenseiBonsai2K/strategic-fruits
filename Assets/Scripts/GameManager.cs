@@ -59,6 +59,7 @@ public sealed class GameManager : MonoBehaviour
     {
         _fillHand = FindObjectsOfType<FillHand>();
         Debug.Log("Phase: " + CurrentPhase + ", Round: " + CurrentRound);
+        CardTracker.ClearRoundData();
     }
 
     private void Update()
@@ -105,6 +106,7 @@ public sealed class GameManager : MonoBehaviour
         }
 
         Debug.Log($"Phase: {CurrentPhase}, Round: {CurrentRound}");
+        CardTracker.ClearRoundData();
     }
 
     /// <summary>

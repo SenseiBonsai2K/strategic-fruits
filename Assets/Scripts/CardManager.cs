@@ -9,7 +9,7 @@ using UnityEngine;
 /// <summary>
 ///     Controls the behavior of a card in the game.
 /// </summary>
-public sealed class CardController : MonoBehaviour
+public sealed class CardManager : MonoBehaviour
 {
     public GameManager GameManager;
     private GameObject _firstCardSlot;
@@ -20,6 +20,7 @@ public sealed class CardController : MonoBehaviour
     private Vector3 _originalScale; // The original scale of the GameObject
     private Vector3 _screenPoint;
     private GameObject _secondCardSlot;
+    public Card Card { get; set; }
 
     /// <summary>
     ///     Initializes the card controller at the start of the game.
@@ -151,6 +152,7 @@ public sealed class CardController : MonoBehaviour
     /// <param name="slot">The slot to move the card to.</param>
     private void MoveCardToSpecificSlot([NotNull] GameObject slot)
     {
+        CardTracker.SaveCardAndTime(Card);
         Vector3 globalScale = transform.lossyScale;
         transform.SetParent(slot.transform, false);
         transform.localScale = new Vector3(globalScale.x / transform.parent.lossyScale.x,

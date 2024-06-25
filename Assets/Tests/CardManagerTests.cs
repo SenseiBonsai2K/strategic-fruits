@@ -7,12 +7,14 @@ using UnityEngine;
 using UnityEngine.TestTools;
 
 #endregion
+
 namespace Tests
 {
-    public sealed class CardControllerTests : MonoBehaviour
+    public sealed class CardManagerTests : MonoBehaviour
     {
-        private CardController _cardController;
+        private CardManager _cardManager;
         private GameManager _gameManager;
+        public Card Card { get; set; }
 
         [SetUp]
         public void SetUp()
@@ -41,26 +43,26 @@ namespace Tests
             };
 
             GameObject cardControllerObject = new GameObject();
-            _cardController = cardControllerObject.AddComponent<CardController>();
-            _cardController.GameManager = _gameManager;
-            _cardController.transform.SetParent(handObject.transform, false);
+            _cardManager = cardControllerObject.AddComponent<CardManager>();
+            _cardManager.GameManager = _gameManager;
+            _cardManager.transform.SetParent(handObject.transform, false);
         }
 
         [TearDown]
         public void TearDown()
         {
-            Destroy(_cardController.gameObject);
+            Destroy(_cardManager.gameObject);
             Destroy(_gameManager.gameObject);
         }
 
         [UnityTest]
         public IEnumerator OnMouseDown_WhenIsChildOfCurrentHand_IsDraggingIsTrue()
         {
-            _cardController.InvokeOnMouseDown();
+            _cardManager.InvokeOnMouseDown();
 
             yield return null;
 
-            Assert.IsTrue(_cardController.IsDragging());
+            Assert.IsTrue(_cardManager.IsDragging());
         }
 
         // [UnityTest]
@@ -77,43 +79,53 @@ namespace Tests
         [UnityTest]
         public IEnumerator OnMouseOver_WhenNotDraggingAndIsChildOfCurrentHand_ScalesCard()
         {
-            Vector3 originalScale = _cardController.GetOriginalScale();
+            Vector3 originalScale = _cardManager.GetOriginalScale();
 
-            _cardController.InvokeOnMouseOver();
+            _cardManager.InvokeOnMouseOver();
 
             yield return null;
 
-            Assert.AreNotEqual(originalScale, _cardController.transform.localScale);
+            Assert.AreNotEqual(originalScale, _cardManager.transform.localScale);
         }
 
         [UnityTest]
         public IEnumerator OnMouseExit_WhenNotDraggingAndIsChildOfCurrentHand_ResetsCard()
         {
-            Vector3 originalPosition = _cardController.transform.position;
-            Vector3 originalScale = _cardController.GetOriginalScale();
+            Vector3 originalPosition = _cardManager.transform.position;
+            Vector3 originalScale = _cardManager.GetOriginalScale();
 
-            _cardController.InvokeOnMouseOver();
-            _cardController.InvokeOnMouseExit();
+            _cardManager.InvokeOnMouseOver();
+            _cardManager.InvokeOnMouseExit();
 
             yield return null;
 
-            Assert.AreEqual(originalPosition, _cardController.transform.position);
-            Assert.AreEqual(originalScale, _cardController.transform.localScale);
+            Assert.AreEqual(originalPosition, _cardManager.transform.position);
+            Assert.AreEqual(originalScale, _cardManager.transform.localScale);
         }
 
         [UnityTest]
         public IEnumerator ResetHover_WhenNotDraggingAndIsChildOfCurrentHand_ResetsCard()
         {
-            Vector3 originalPosition = _cardController.transform.position;
-            Vector3 originalScale = _cardController.GetOriginalScale();
+            Vector3 originalPosition = _cardManager.transform.position;
+            Vector3 originalScale = _cardManager.GetOriginalScale();
 
-            _cardController.InvokeOnMouseOver();
-            _cardController.InvokeResetHover();
+            _cardManager.InvokeOnMouseOver();
+            _cardManager.InvokeResetHover();
 
             yield return null;
 
-            Assert.AreEqual(originalPosition, _cardController.transform.position);
-            Assert.AreEqual(originalScale, _cardController.transform.localScale);
+            Assert.AreEqual(originalPosition, _cardManager.transform.position);
+            Assert.AreEqual(originalScale, _cardManager.transform.localScale);
         }
+
+        //[UnityTest]
+        //public IEnumerator SaveCardAndTime_SavesCardAndTime()
+        //{
+        //CardTracker.SaveCardAndTime(Card);
+        //yield return null;
+        //Assert.AreEqual(1, CardTracker._playedCards.Count);
+        //Assert.AreEqual(Card, CardTracker._playedCards[0].Item1);
+        //Assert.AreEqual(0, CardTracker._playedCards[0].Item2);
+        //}
     }
 }
