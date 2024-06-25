@@ -94,7 +94,7 @@ public sealed class CardController : MonoBehaviour
             return;
         }
 
-        MoveCardToSlot();
+        MoveCardToNextSlot();
         _originalPosition = transform.position;
         StartCoroutine(FindObjectOfType<CameraManager>().NextCameraWithDelay());
     }
@@ -124,9 +124,9 @@ public sealed class CardController : MonoBehaviour
     /// <summary>
     ///     Moves the card to the appropriate slot.
     /// </summary>
-    private void MoveCardToSlot()
+    private void MoveCardToNextSlot()
     {
-        MoveCardToSlot(!GameManager.FirstCardsSolved ? _firstCardSlot : _secondCardSlot);
+        MoveCardToSpecificSlot(!GameManager.FirstCardsSolved ? _firstCardSlot : _secondCardSlot);
     }
 
     /// <summary>
@@ -145,7 +145,7 @@ public sealed class CardController : MonoBehaviour
     ///     Moves the card to the specified slot.
     /// </summary>
     /// <param name="slot">The slot to move the card to.</param>
-    private void MoveCardToSlot([NotNull] GameObject slot)
+    private void MoveCardToSpecificSlot([NotNull] GameObject slot)
     {
         Vector3 globalScale = transform.lossyScale;
         transform.SetParent(slot.transform, false);
