@@ -112,8 +112,8 @@ public sealed class GameManager : MonoBehaviour
     /// <returns>True if the phase should be advanced, false otherwise.</returns>
     private bool ShouldAdvancePhase()
     {
-        return (CurrentPhase == 1 && CurrentRound > 2) ||
-            (CurrentPhase is 2 or 3 && CurrentRound > 6);
+        return (CurrentPhase == 1 && CurrentRound > 12) ||
+            (CurrentPhase is 2 or 3 && CurrentRound > 3);
     }
 
     /// <summary>
