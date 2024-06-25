@@ -124,6 +124,9 @@ public sealed class GameManager : MonoBehaviour
     {
         CurrentPhase++;
         CurrentRound = 1;
+
+        Hands = Hands ?? new List<GameObject>();
+        
         //TODO usefully only during testing
         foreach (Transform card in Hands.SelectMany(static hand => hand.transform.Cast<Transform>())) Destroy(card.gameObject);
 
@@ -224,5 +227,25 @@ public sealed class GameManager : MonoBehaviour
         AdvanceRound();
 
         IsCoroutinesRunning = false;
+    }
+
+    public void InvokeAdvanceRound()
+    {
+        AdvanceRound();
+    }
+
+    public void InvokeAdvancePhase()
+    {
+        AdvancePhase();
+    }
+
+    public IEnumerator InvokeRotateAndDestroyFirstCard()
+    {
+        return RotateAndDestroyFirstCard();
+    }
+
+    public IEnumerator InvokeRotateAndDestroySecondCard()
+    {
+        return RotateAndDestroySecondCard();
     }
 }
