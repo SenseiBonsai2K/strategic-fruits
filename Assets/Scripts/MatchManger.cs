@@ -34,7 +34,7 @@ public class MatchManager
         {
             case 1:
             {
-                foreach ((var card, var _) in CardTracker.PlayedCards)
+                foreach (var (card, _) in CardTracker.PlayedCards)
                 {
                     var player = new Player(card.Suit, card.Rank);
                     _players.Add(player);
@@ -47,7 +47,7 @@ public class MatchManager
                 // Get the last four cards
                 var lastFourCards = CardTracker.PlayedCards.Skip(Math.Max(0, CardTracker.PlayedCards.Count - 4));
 
-                foreach ((var card, var _) in lastFourCards)
+                foreach (var (card, _) in lastFourCards)
                 {
                     var player = new Player(card.Suit, card.Rank);
                     _players.Add(player);
@@ -81,6 +81,12 @@ public class MatchManager
             var player2 = _players.Find(player => player.Suit == suit2);
 
             var winner = WhoWins(player1, player2, currentPhase).Suit;
+            if (winner == "Tie")
+            {
+                Debug.Log($"The match between {suit1} and {suit2} is a {winner}.");
+                continue;
+            }
+
             Debug.Log($"The winner of the match between {suit1} and {suit2} is {winner}.");
         }
     }
@@ -105,11 +111,17 @@ public class MatchManager
 
         if (player2.Rank == 5 && player1.Rank == 1) return player1;
 
+        if (player1.Rank == player2.Rank)
+            return new Player("Tie", 0);
+
         return player1.Rank > player2.Rank ? player1 : player2;
     }
 
     private static Player CheckPhase3Winner(Player player1, Player player2)
     {
+        if (player1.Rank == player2.Rank)
+            return new Player("Tie", 0);
+
         return player1.Rank > player2.Rank ? player1 : player2;
     }
 }
