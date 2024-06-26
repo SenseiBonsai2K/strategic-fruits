@@ -45,14 +45,14 @@ public class GridManager : MonoBehaviour
         cell.Rank = rank;
         cell.Suit = suit;
 
-        //Material material = Resources.Load<Material>($"Materials/Grids/{rank}/{rank}_{suit}");
-        //Renderer renderer = cellObject.GetComponent<Renderer>();
-        //if (renderer != null)
-        //{
-        //  renderer.material = material;
-        //}
+        Material material = Resources.Load<Material>($"Materials/Grids/{rank}/{rank}_{suit}");
+        Renderer renderer = cellObject.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            renderer.material = material;
+        }
 
-        //cell.Content = material;
+        cell.Content = material;
         cellObject.name = $"{cell.Rank} of {cell.Suit}";
 
         return cellObject;
