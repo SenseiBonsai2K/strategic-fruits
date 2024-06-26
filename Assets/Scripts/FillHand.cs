@@ -49,7 +49,7 @@ public sealed class FillHand : MonoBehaviour
             cardObject.tag = gameObject.tag;
             cardObject.GetComponent<Renderer>().material = Cards[i].Content;
             cardObject.transform.localPosition = CalculateCardPosition(i);
-            cardObject.transform.Rotate(Vector3.right, 35);
+            cardObject.transform.Rotate(Vector3.right, 40);
 
             // Set the Card property of the CardController
             CardManager cardManager = cardObject.GetComponent<CardManager>();
@@ -98,7 +98,7 @@ public sealed class FillHand : MonoBehaviour
         {
             Rank = rank,
             Suit = suit,
-            Content = Resources.Load<Material>("Materials/" + rank + "/" + rank + "_" + suit)
+            Content = Resources.Load<Material>($"Materials/Cards/{rank}/{rank}_{suit}")
         };
     }
 
