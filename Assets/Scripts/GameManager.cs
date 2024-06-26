@@ -154,7 +154,7 @@ public sealed class GameManager : MonoBehaviour
         return SecondSlots.All(static slot => slot.transform.childCount > 0);
     }
 
-    private IEnumerator AnimateCard(List<GameObject> slots)
+    private IEnumerator RotateCards(List<GameObject> slots)
     {
         yield return new WaitForSeconds(2);
 
@@ -189,7 +189,7 @@ public sealed class GameManager : MonoBehaviour
         IsCoroutinesRunning = true;
         FirstCardsSolved = true;
 
-        yield return AnimateCard(FirstSlots);
+        yield return RotateCards(FirstSlots);
 
         // Destroy the cards in the first slot
         if (CurrentPhase == 1)
@@ -211,7 +211,7 @@ public sealed class GameManager : MonoBehaviour
     {
         IsCoroutinesRunning = true;
 
-        yield return AnimateCard(SecondSlots);
+        yield return RotateCards(SecondSlots);
 
         //Destroy the cards in the slots
         foreach (GameObject slot in FirstSlots)
