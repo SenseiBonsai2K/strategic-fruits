@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
@@ -24,7 +25,8 @@ public class GridCreator : MonoBehaviour
     private readonly string[] _suits = { "Apple", "Pear", "Banana", "Orange" };
 
     // A 2D array representing the grid of cells.
-    private Cell[,] _grid;
+    private static Cell[,] _grid;
+    
 
     // This method is called at the start of the game.
     private void Start()
