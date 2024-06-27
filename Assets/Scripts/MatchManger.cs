@@ -72,23 +72,62 @@ public class MatchManager
     }
 
     /// <summary>
-    ///     Gets the winners of the round.
+    ///     Determines the winners of the round based on the matchups and the current phase of the game.
     /// </summary>
-    /// <param name="matchupRound">The current matchup round.</param>
+    /// <param name="matchupRound">The current round of matchups.</param>
     /// <param name="currentPhase">The current phase of the game.</param>
     public static void GetRoundWinners(int matchupRound, int currentPhase)
     {
+        // Create players for the current phase
         _players = CreatePlayers(currentPhase);
+
+        // Iterate through each matchup in the current round
         foreach (var (suit1, suit2) in Matchups[matchupRound])
         {
-            var player1 = _players.Find(player => player.Suit == suit1);
-            var player2 = _players.Find(player => player.Suit == suit2);
+            // Find the players for the current matchup
+            var player1 = FindPlayer(suit1);
+            var player2 = FindPlayer(suit2);
 
-            var winner = WhoWins(player1, player2, currentPhase).Suit;
-            Debug.Log(winner == "Tie"
-                ? $"The match between {suit1} and {suit2} is a {winner}."
-                : $"The winner of the match between {suit1} and {suit2} is {winner}.");
+            // Determine the winner of the matchup
+            var winner = DetermineWinner(player1, player2, currentPhase);
+
+            // If there is a winner, give tokens and log the result
+            if (winner != null)
+            {
+                var loser = winner == player1 ? player2 : player1;
+                GridManager.GiveTokens(winner, loser, CardTracker.PlayedCards);
+            }
+
+            // Log the result of the matchup
+            Debug.Log($"{suit1} vs {suit2}: {winner?.Suit ?? "Tie"}");
         }
+    }
+
+    /// <summary>
+    ///     Finds a player based on their suit.
+    /// </summary>
+    /// <param name="suit">The suit of the player to find.</param>
+    /// <returns>The player with the matching suit, or null if no player is found.</returns>
+    private static Player FindPlayer(string suit)
+    {
+        // Find and return the player with the matching suit
+        return _players.Find(player => player.Suit == suit);
+    }
+
+    /// <summary>
+    ///     Determines the winner between two players based on the current phase of the game.
+    /// </summary>
+    /// <param name="player1">The first player.</param>
+    /// <param name="player2">The second player.</param>
+    /// <param name="currentPhase">The current phase of the game.</param>
+    /// <returns>The winning player, or null if there is a tie.</returns>
+    private static Player DetermineWinner(Player player1, Player player2, int currentPhase)
+    {
+        // Determine the suit of the winning player
+        var winnerSuit = WhoWins(player1, player2, currentPhase).Suit;
+
+        // Return the player with the winning suit, or null if there is a tie
+        return winnerSuit == player1.Suit ? player1 : winnerSuit == player2.Suit ? player2 : null;
     }
 
     /// <summary>
@@ -103,7 +142,6 @@ public class MatchManager
         switch (currentPhase)
         {
             case 1:
-                return CheckPhase1And2Winner(player1, player2);
             case 2:
                 return CheckPhase1And2Winner(player1, player2);
             case 3:
