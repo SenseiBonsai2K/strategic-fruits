@@ -15,7 +15,7 @@ public class Cell : MonoBehaviour
     public bool HasToken { get; set; } = false;
 }
 
-public class GridManager : MonoBehaviour
+public class GridCreator : MonoBehaviour
 {
     // The prefab used to instantiate new cells.
     public GameObject CellPrefab;
@@ -33,7 +33,11 @@ public class GridManager : MonoBehaviour
         CreateGrid(4, 5);
     }
 
-    // Creates a grid of cells with the given dimensions.
+    /// <summary>
+    /// Creates a grid of cells with the specified width and height.
+    /// </summary>
+    /// <param name="width">The width of the grid.</param>
+    /// <param name="height">The height of the grid.</param>
     private void CreateGrid(int width, int height)
     {
         _grid = new Cell[width, height];
@@ -49,7 +53,14 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    // Creates a cell at the given position with the given suit and rank.
+    /// <summary>
+    /// Creates a cell with the specified coordinates, suit, and rank.
+    /// </summary>
+    /// <param name="x">The x-coordinate of the cell.</param>
+    /// <param name="y">The y-coordinate of the cell.</param>
+    /// <param name="suit">The suit of the cell.</param>
+    /// <param name="rank">The rank of the cell.</param>
+    /// <returns>The created cell as a GameObject.</returns>
     private GameObject CreateCell(int x, int y, string suit, int rank)
     {
         var cellObject = Instantiate(CellPrefab, GetCellPosition(x, y), transform.rotation);
@@ -70,7 +81,12 @@ public class GridManager : MonoBehaviour
         return cellObject;
     }
 
-    // Returns the position of the cell at the given coordinates.
+    /// <summary>
+    /// Calculates the position of a cell in the grid based on its coordinates.
+    /// </summary>
+    /// <param name="x">The x-coordinate of the cell.</param>
+    /// <param name="y">The y-coordinate of the cell.</param>
+    /// <returns>The position of the cell as a Vector3.</returns>
     private Vector3 GetCellPosition(int x, int y)
     {
         var relativePosition = new Vector3(x * CellPrefab.transform.localScale.x,
