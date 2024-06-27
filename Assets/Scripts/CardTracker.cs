@@ -28,8 +28,14 @@ public class CardTracker : MonoBehaviour
         PlayedCards.Add((card, timeElapsed));
 
         Debug.Log($"Card saved: {card.Rank} of {card.Suit}, Time elapsed: {timeElapsed}");
-        
-        if ((GameManager.CurrentPhase == 1 && PlayedCards.Count == 4) || (GameManager.CurrentPhase != 1 && PlayedCards.Count == 8))
+
+        //TODO InfluxDb integration
+        // InfluxDBManager.WritePointOnDatabase(GameManager.CurrentPhase, GameManager.CurrentRound,
+        //     MatchManager.GetOpponent(GameManager.CurrentRound, card.Suit),
+        //     card.Suit, card.Rank, timeElapsed);
+
+        if ((GameManager.CurrentPhase == 1 && PlayedCards.Count == 4) ||
+            (GameManager.CurrentPhase != 1 && PlayedCards.Count == 8))
             MatchManager.GetRoundWinners(GameManager.CurrentRound, GameManager.CurrentPhase);
     }
 

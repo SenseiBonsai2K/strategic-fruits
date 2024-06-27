@@ -143,4 +143,15 @@ public class MatchManager
 
         return player1.Rank > player2.Rank ? player1 : player2;
     }
+
+    // public static string GetOpponent(int currentRound, string suit)
+    // {
+    //     if (Matchups.ContainsKey(currentRound))
+    //         foreach (var matchup in Matchups[currentRound])
+    //             if (matchup.Item1 == suit)
+    //                 return matchup.Item2;
+    //             else if (matchup.Item2 == suit) return matchup.Item1;
+    //
+    //     throw new ArgumentException($"No matchups found for round {currentRound} and suit {suit}");
+    // }
 }
