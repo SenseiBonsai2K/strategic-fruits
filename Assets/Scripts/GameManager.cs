@@ -113,7 +113,7 @@ public sealed class GameManager : MonoBehaviour
     private bool ShouldAdvancePhase()
     {
         return (CurrentPhase == 1 && CurrentRound > 12) ||
-            (CurrentPhase is 2 or 3 && CurrentRound > 3);
+            (CurrentPhase is 2 or 3 && CurrentRound > 6);
     }
 
     /// <summary>
